@@ -1,26 +1,38 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import Header from '../../components/checkout/header';
+import OrderSummary from '../../components/checkout/order-summary';
+import ScientificCalculator from '../../components/checkout/delivery-details';
+import PayButton from '../../components/checkout/pay-button';
+import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
+import { NavigationProp } from '@react-navigation/native';
 
-const CheckoutScreen = () => {
+interface CheckoutScreenProps {
+    navigation: NavigationProp<any>;
+}
+const CheckoutScreen:React.FC<CheckoutScreenProps> = ({navigation}) => {
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Checkout Screen</Text>
+        <View>
+            <Header navigation={navigation} />
+            <ScrollView>
+            <ExpoStatusBar style='light' backgroundColor='black' /> 
+                <View style={styles.container}>
+                    <OrderSummary />
+                    <ScientificCalculator />
+                    <PayButton />
+                </View>
+            </ScrollView>
         </View>
+        
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: '#f5f5f5',
     },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#333',
-    },
+   
 });
 
 export default CheckoutScreen;

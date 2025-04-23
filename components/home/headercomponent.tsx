@@ -2,9 +2,17 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const HeaderComponent = () => {
+interface HeaderComponentProps {
+    onTextInputClicked: () => void;
+    defaultTextInputConRef: React.RefObject<TouchableOpacity>;
+    headerComponentRef: React.RefObject<View>;
+}
+
+const HeaderComponent: React.FC<HeaderComponentProps> = ({headerComponentRef, onTextInputClicked, defaultTextInputConRef}) => {
     return (
+        <View ref={headerComponentRef}>
         <LinearGradient
+                
                 colors={['#572C4B', '#2F1528']}
                 style={{paddingHorizontal:13, borderBottomLeftRadius:30, borderBottomRightRadius:30}}
             >
@@ -24,15 +32,16 @@ const HeaderComponent = () => {
                     </TouchableOpacity>
                 </View>
                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', marginBottom:20, }}>
-                    <View style={{flexDirection:'row', alignItems:'center',backgroundColor:'white', borderRadius:30, paddingHorizontal:20, paddingVertical:10 }}>
+                    <TouchableOpacity ref={defaultTextInputConRef} onPress={onTextInputClicked} style={{flexDirection:'row', alignItems:'center',backgroundColor:'white', borderRadius:30, paddingHorizontal:20, paddingVertical:10 }}>
                         <Image style={{marginRight:10}} source={require('../../assets/search.png')} />
-                        <TextInput style={{width:'70%'}} placeholderTextColor={'#8E9295'} placeholder='Search gadget' />
-                    </View>
+                        <Text style={{width:'70%', color:'#8E9295'}}>Search gadget</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity style={{backgroundColor:'#FFFFFF1A', padding:10, borderRadius:50}}>
                         <Image source={require('../../assets/filter.png')} />
                     </TouchableOpacity>
                 </View>
             </LinearGradient>
+            </View>
     );
 };
 

@@ -1,26 +1,21 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import Header from '../../components/cart-components/header';
+import OrderSummary from '../../components/cart-components/order-summary';
+import { NavigationProp } from '@react-navigation/native';
 
-const CartScreen = () => {
+type CartScreenNavigationProp = NavigationProp<any>;
+
+const CartScreen = ({navigation}: {navigation: CartScreenNavigationProp}) => {
     return (
-        <View style={styles.container}>
-            <Text style={styles.text}>Welcome to the Cart Screen!</Text>
+        <View style={{flex:1}}>
+            <Header navigation={navigation} />
+            <OrderSummary navigation={navigation} />
         </View>
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#f5f5f5',
-    },
-    text: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#333',
-    },
-});
+
 
 export default CartScreen;

@@ -13,7 +13,7 @@ const SecondView = ({navigation}: {navigation: NavigationProp<any>}) => {
         colors={['#00000000', '#000000F7']}
         style={{flex:1, justifyContent:'flex-end'}}
         >
-            <TouchableOpacity onPress={()=>navigation.navigate('main')} style={{position:'absolute', backgroundColor:'#00000026', paddingHorizontal:30, paddingVertical:10, borderRadius:30, top:30, right:20}} >
+            <TouchableOpacity onPress={()=>navigation.navigate('create_account')} style={{position:'absolute', backgroundColor:'#00000026', paddingHorizontal:30, paddingVertical:10, borderRadius:30, top:30, right:20}} >
                 <Text style={{color:'white', fontSize:14}}>Skip</Text>
             </TouchableOpacity>
         <View style={{paddingHorizontal:15, marginBottom:60, justifyContent:'space-between', flex:2/5}} >

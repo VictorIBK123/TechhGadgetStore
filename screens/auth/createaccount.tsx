@@ -23,7 +23,7 @@ const CreateAccount = ({navigation}: {navigation: NavigationProp<any>}) => {
             setEmailUsed(false)
           setSignedUp(true)
           setLoading(false)
-          setInterval(async()=>{
+          const interval= setInterval(async()=>{
             await auth.currentUser?.reload()
             if (auth.currentUser!=null ){
               if (auth.currentUser.emailVerified){
@@ -35,7 +35,8 @@ const CreateAccount = ({navigation}: {navigation: NavigationProp<any>}) => {
                 }).catch((error) => {
                   alert(error.message)
                 });
-                navigation.navigate('main')
+                navigation.navigate('personal_info', {email: values.email, username: values.username})
+                clearInterval(interval)
               } 
             }
           },3000)
@@ -118,7 +119,7 @@ const CreateAccount = ({navigation}: {navigation: NavigationProp<any>}) => {
                 {touched.confirmPassword && errors.confirmPassword && <Text style={{color:'#dd3333'}}>{errors.confirmPassword}</Text>}
                 { touched.confirmPassword && !errors.confirmPassword && <Text style={{ color:'green'}}>Passwords match</Text>}
             </View>
-            {signedUp && <Text style={{marginBottom:20,fontSize:13, color:'green'}}>Email verification link has been sent to {values.email}</Text>}
+            {signedUp && <Text style={{marginBottom:20,fontSize:13, color:'#666666'}}>Email verification link has been sent to {values.email}, you will be redirected automatically after verification.</Text>}
             {emailUsed && <Text style={{marginBottom:20, color:'red', fontSize:16}}>Email already exists</Text>}
             <TouchableOpacity disabled={!isValid} onPress={()=>handleSubmit()} style={styles.signUpContainer}>
                 <Text style={styles.signUp}>Sign up</Text>

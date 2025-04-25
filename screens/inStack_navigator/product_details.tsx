@@ -9,23 +9,24 @@ import { StatusBar } from 'expo-status-bar';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import AddToCartButton from '../../components/product_details/add-to-cart.button';
+import { AProductData } from '../../Types/product_data';
 
 
 
 type Props = {
     navigation: NavigationProp<any>; // Replace 'any' with the specific type if known, e.g., NavigationProp
-};
-
-const ProductDetails: React.FC<Props> = ({ navigation }) => {
+    route: RouteProp<any>; // Replace 'any' with the specific type if known, e.g., RouteProp};
+}
+const ProductDetails: React.FC<Props> = ({ navigation,route }) => {
     return (
         <SafeAreaView style={{flex:1 }}>
             <Header navigation={navigation} />
             <ScrollView style={{}}>
                 <View style={{}}>
                     <View style={{backgroundColor:'white', marginBottom:10}}>
-                        <Image style={{alignSelf:'center',}} source={require('../../assets/iphone-13-pro-big.png')} />
+                        <Image style={{alignSelf:'center', resizeMode:'contain',height:280, width:280}} source={{uri:route.params?.item.img_url}} />
                     </View>
-                    <OtherDetails />
+                    <OtherDetails productData={route.params?.item} />
                     <QuantityCalc />
                     <AddToCartButton />
                 </View>

@@ -17,7 +17,7 @@ const HotDealsComp = ({navigation}: {navigation: NavigationProp<any>}) => {
                     <Text style={{fontWeight:'500', fontSize:16}}>Hot Deals</Text>
                 </View>
                 <TouchableOpacity style={{flexDirection:'row', alignItems:'center'}}>   
-                    <Text style={{fontSize:12, fontWeight:400}}>More deals</Text>
+                    <Text style={{fontSize:12, fontWeight:400}}>More</Text>
                     <Image source={require('../../assets/right.png')} />
                 </TouchableOpacity>
             </View>

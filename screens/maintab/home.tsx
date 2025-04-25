@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, ScrollView, Dimensions, Touchable, TouchableOpacity } from 'react-native';
 import HeaderComponent from '../../components/home/headercomponent';
 import CategoriesList from '../../components/home/categorieslist';
@@ -9,10 +9,11 @@ import SearchedProductsList from '../../components/search-in-home/searched-produ
 import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { NavigationProp } from '@react-navigation/native';
-
+import { app, db } from '../../firebase-config';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { ProductsData } from '../../Types/product_data';
 
 type HomeScreenNavigationProp = NavigationProp<any>;
-
 const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
     const {height, width}= Dimensions.get('window');
     const mainPageOpacity = useSharedValue(1)
@@ -33,15 +34,11 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
         textInputRef.current?.blur()
      }
     const handleScroll =()=>{
-        // defaultTextInputConRef.current?.measure((x,y,width,height,px, py)=>{
-        //     console.log(x,y,width,height,px, py);
-        // })
-        if (headerComponentRef.current){
-            headerComponentRef.current.measure((x,y,width,height,px, py)=>{
-                console.log(x,y,width,height,px, py);
-            })
-        }
-        
+        // if (headerComponentRef.current){
+        //     headerComponentRef.current.measure((x,y,width,height,px, py)=>{
+        //         console.log(x,y,width,height,px, py);
+        //     })
+        // }
     }
     return (
         <View style={{ flex: 1, }}>
@@ -49,9 +46,9 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
             <Animated.ScrollView onScroll={handleScroll} style={[{},mainPageAnimatedStyle ]}>
             <View>
                 <HeaderComponent headerComponentRef={headerComponentRef} defaultTextInputConRef={defaultTextInputConRef} onTextInputClicked={bringUpSearch} />
-                <CategoriesList />
+                <CategoriesList navigation={navigation} />
                 <HotDealsComp navigation={navigation} />
-                <CategoriesList />
+                <CategoriesList navigation={navigation} />
             </View>
             </Animated.ScrollView>
              
@@ -68,3 +65,6 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+
+
+

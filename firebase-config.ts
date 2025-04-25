@@ -1,5 +1,6 @@
 import { getAuth} from "firebase/auth";
 import { initializeApp } from "firebase/app"
+import { getFirestore } from "firebase/firestore";
 const config  = {
       apiKey: "AIzaSyBXuGFspFi2r8wkOX38G1rsW3aagOTR9Nw",
       authDomain: "ibk-movie-app.firebaseapp.com",
@@ -11,3 +12,4 @@ const config  = {
     };
 export const app = initializeApp(config)
 export const auth = getAuth(app); 
+export const db = getFirestore(app)

@@ -29,7 +29,7 @@ const ThirdView:React.FC<ThirdViewProps> = ({navigation}) => {
                     </View>
                     <Text style={{textAlign:'center', color:'#ffffff', fontWeight:'700', fontSize:24, lineHeight:36}}>Get AI-powered product recommendations</Text>
                     <Text style={{textAlign:'center', color:'#ffffff', fontWeight:'500', fontSize:14, lineHeight:22}}>Our AI-powered suggestions help you choose the best tech based on your needs and preferences</Text>
-                    <TouchableOpacity onPress={()=>navigation.navigate('main')} style={{alignItems:'center',flexDirection:'row',paddingVertical:13, justifyContent:'center', backgroundColor:'#ffffff',   borderRadius:50}}>
+                    <TouchableOpacity onPress={()=>navigation.navigate('create_account')} style={{alignItems:'center',flexDirection:'row',paddingVertical:13, justifyContent:'center', backgroundColor:'#ffffff',   borderRadius:50}}>
                         <Text style={{color:'#000000', marginRight:10, fontSize:16, textAlign:'center'}}>Get started</Text>
                         <Image source={require('../../assets/next.png')} style={{height:14, width:20, }} />
                     </TouchableOpacity>

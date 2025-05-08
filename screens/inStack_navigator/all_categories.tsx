@@ -1,8 +1,10 @@
 import { collection, getDocs, getFirestore } from 'firebase/firestore';
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Alert } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { app, db } from '../../firebase-config';
 import { NavigationProp } from '@react-navigation/native';
+import useGetDocs from '../../hooks/get_docs';
+import { UserDetails } from '../../contexts/myContext';
 
 interface AllCategoriesCompProp {
     navigation: NavigationProp<any>;
@@ -10,25 +12,15 @@ interface AllCategoriesCompProp {
 
 const AllCategoriesComp: React.FC<AllCategoriesCompProp> = ({navigation}) => {
     const [categories, setCategories] = React.useState<{name: string, key: string, img_url: string}[]>([])
+    const context = useContext(UserDetails)
          useEffect(()=>{
-                (async()=>{
-                    const querySnapshot = await getDocs(collection(db, 'categories'));
-                    var categoriesData:{name: string, key: string, img_url: string}[] =[];
-                    try{
-                        querySnapshot.forEach((doc)=>{
-                            categoriesData.push({key: `${doc.id}`, name:doc.data().name, img_url:(doc.data().img_url) })
-                        })
-                        setCategories(categoriesData)
-                    }
-                    catch(error){
-                        alert(error)
-                    }
-                })()
-        
-            })
-  
+            (async ()=>{
+                await useGetDocs('categories',setCategories,context?.userEmail)
+            })()
+            },[])
     return (
         <FlatList
+        ListEmptyComponent={()=><ActivityIndicator size={'large'} color={'#2F1528'} />}
         style={{flex:17/20, marginBottom:20}}
             contentContainerStyle={{marginTop:20, paddingHorizontal:10, paddingBottom:50}}
             data={categories}

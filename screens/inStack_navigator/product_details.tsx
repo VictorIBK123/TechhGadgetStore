@@ -28,7 +28,7 @@ const ProductDetails: React.FC<Props> = ({ navigation,route }) => {
                     </View>
                     <OtherDetails productData={route.params?.item} />
                     <QuantityCalc />
-                    <AddToCartButton />
+                    <AddToCartButton item={route.params?.item} category={route.params?.category}  />
                 </View>
             </ScrollView>
         </SafeAreaView>

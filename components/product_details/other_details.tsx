@@ -13,7 +13,7 @@ const OtherDetails: React.FC<OtherDetailsProps> = ({productData }) => {
             <Text style={{fontSize:15,fontWeight:'500', }}>{productData.name}</Text>
             <View style={{flexDirection:'row', marginTop:4, alignItems:'center'}}>
                 <Text style={{marginRight:10, fontSize:19}}>₦{parseFloat(productData.price).toLocaleString()}</Text>
-                <Text style={{color:'#515151', fontSize:15, textDecorationLine:'line-through', textDecorationStyle:'solid'}}>₦1,300,060</Text>
+                <Text style={{color:'#515151', fontSize:15, textDecorationLine:'line-through', textDecorationStyle:'solid'}}>₦{(parseFloat(productData.price)+ ((10/100)*parseFloat(productData.price))).toLocaleString()}</Text>
             </View>
             {/* style={{fontWeight:'500', fontSize:13.5, color:'#515151', marginBottom:10 */}
             <Markdown style={{

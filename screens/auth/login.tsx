@@ -6,10 +6,13 @@ import { NavigationProp } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase-config';
 import { Formik } from 'formik';
-import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
+import { StatusBar } from 'expo-status-bar';
+import { useContext } from 'react';
+import { UserDetails } from '../../contexts/myContext';
 
 const Login = ({navigation}: {navigation: NavigationProp<any>}) => {
     const [passwordVisible, setPasswordVisible] = useState(false)
+    const emailContext= useContext(UserDetails)
     const loginSchema= Yup.object().shape({
         email: Yup.string().email('Invalid email').required('Please, enter your email'),
         password: Yup.string().min(6, 'Password is too short, min 6 chars').max(15, 'Password is too long, max 15 chars').required('Please, enter your password').matches(/^\S*$/, 'Password must not contain spaces')
@@ -23,6 +26,7 @@ const Login = ({navigation}: {navigation: NavigationProp<any>}) => {
       await auth.currentUser?.reload()
       if (auth.currentUser?.emailVerified){
         setSigning(false)
+        emailContext?.setUserEmail(values.email)
         navigation.navigate('main')
       }
   })
@@ -42,7 +46,7 @@ const Login = ({navigation}: {navigation: NavigationProp<any>}) => {
     >
       {({handleSubmit, handleBlur, handleChange, values, errors, touched, isValid})=>(
         <View style={styles.container}>
-            <ExpoStatusBar style='light' backgroundColor='#572C4B' />
+            <StatusBar style='light' backgroundColor='#572C4B' />
             <Text style={styles.header}>Login to your account</Text>
             <Text style={styles.label}>E-mail</Text>
             <View style={styles.inputView}>

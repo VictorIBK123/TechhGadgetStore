@@ -9,12 +9,13 @@ import UseAddToCart from '../../hooks/add_to_cart';
 import { UserDetails } from '../../contexts/myContext';
 import useGetDocs from '../../hooks/get_docs';
 import UseRemoveFromCart from '../../hooks/remove_from_cart';
+import useFetchDeals from '../../hooks/fetch_deals';
 
 interface ProductsInCategoryProps{
     navigation: NavigationProp<any>;
     route: RouteProp<any>;
 }
-const ProductsInCategory: React.FC<ProductsInCategoryProps> = ({navigation, route}) => {
+const ProductsInDeals: React.FC<ProductsInCategoryProps> = ({navigation, route}) => {
     const [addingToCart, setAddingToCart] = useState<boolean>(false)
     const [removingFromCart, setRemovingFromCart] = useState<boolean>(false)
     const context = useContext(UserDetails)
@@ -22,17 +23,22 @@ const ProductsInCategory: React.FC<ProductsInCategoryProps> = ({navigation, rout
         useEffect(()=>{
             (async()=>{
                 navigation.setOptions({title: route.params?.productName.toUpperCase()})
-                await useGetDocs(route.params?.productName,setProducts, context?.userEmail)
+                var queryResults: ProductsData=[]
+                queryResults = await useFetchDeals('hot_deals',route.params?.categories,context?.userEmail?context.userEmail:'')
+                setProducts(queryResults)
             })()
-        },[])
+        },[route.params?.categories])
     const addToCartFunc = async(item: AProductData)=>{
         await UseAddToCart(item.name,context?.userEmail, setAddingToCart )
-        await useGetDocs(route.params?.productName,setProducts, context?.userEmail)
-    }
+        var queryResults: ProductsData=[]
+        queryResults = await useFetchDeals('hot_deals',route.params?.categories,context?.userEmail?context.userEmail:'')
+        setProducts(queryResults)    }
+
     const removeFromCartFunc = async(item: AProductData)=>{
         await UseRemoveFromCart(item.name,context?.userEmail, setRemovingFromCart )
-        await useGetDocs(route.params?.productName,setProducts, context?.userEmail)
-    }
+        var queryResults: ProductsData=[]
+        queryResults = await useFetchDeals('hot_deals',route.params?.categories,context?.userEmail?context.userEmail:'')
+        setProducts(queryResults)    }
     const data = products
     return (
         <View style={{flex:1}}>
@@ -74,4 +80,4 @@ const ProductsInCategory: React.FC<ProductsInCategoryProps> = ({navigation, rout
 };
 
 
-export default ProductsInCategory;
+export default ProductsInDeals;

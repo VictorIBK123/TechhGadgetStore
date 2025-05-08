@@ -5,12 +5,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 interface HeaderComponentProps {
     onTextInputClicked: () => void;
     defaultTextInputConRef: React.RefObject<TouchableOpacity>;
-    headerComponentRef: React.RefObject<View>;
+    headerSearchRef: React.RefObject<View>;
 }
 
-const HeaderComponent: React.FC<HeaderComponentProps> = ({headerComponentRef, onTextInputClicked, defaultTextInputConRef}) => {
+const HeaderComponent: React.FC<HeaderComponentProps> = ({headerSearchRef, onTextInputClicked, defaultTextInputConRef}) => {
     return (
-        <View ref={headerComponentRef}>
+        <View >
         <LinearGradient
                 
                 colors={['#572C4B', '#2F1528']}
@@ -31,7 +31,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({headerComponentRef, on
                         <Image  source={require('../../assets/notification.png')} />
                     </TouchableOpacity>
                 </View>
-                <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', marginBottom:20, }}>
+                <View  style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', marginBottom:20, }}>
                     <TouchableOpacity ref={defaultTextInputConRef} onPress={onTextInputClicked} style={{flexDirection:'row', alignItems:'center',backgroundColor:'white', borderRadius:30, paddingHorizontal:20, paddingVertical:10 }}>
                         <Image style={{marginRight:10}} source={require('../../assets/search.png')} />
                         <Text style={{width:'70%', color:'#8E9295'}}>Search gadget</Text>

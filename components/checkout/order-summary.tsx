@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const OrderSummary:React.FC = () => {
+interface DeliveryDataTypes{
+    itemQuantity: number,
+    itemTotal:number
+}
+const OrderSummary:React.FC<DeliveryDataTypes> = ({itemQuantity,itemTotal}) => {
+    const [deliveryFee, setDeliveryFee] = useState<number>(3450)
     return (
         <View style={{marginTop:90}} >
             <View style={{paddingHorizontal:10, paddingVertical:10, }}>
@@ -10,10 +15,10 @@ const OrderSummary:React.FC = () => {
             <View style={{backgroundColor:'#ffffff'}}>
                 <View style={styles.orderSummaryItemContainer}>
                     <View>
-                        <Text style={styles.orderSummaryLeftText}>Item total (3)</Text>
+                        <Text style={styles.orderSummaryLeftText}>Item total ({itemQuantity})</Text>
                     </View>
                     <View>
-                        <Text style={{fontSize:14}}>₦2,003,450</Text>
+                        <Text style={{fontSize:14}}>₦{itemTotal}</Text>
                     </View>
                 </View>
                 <View style={styles.orderSummaryItemContainer}>
@@ -21,7 +26,7 @@ const OrderSummary:React.FC = () => {
                         <Text style={styles.orderSummaryLeftText}>Delivery fee</Text>
                     </View>
                     <View>
-                        <Text style={{fontSize:14}}>₦3,450</Text>
+                        <Text style={{fontSize:14}}>₦{deliveryFee.toLocaleString()}</Text>
                     </View>
                 </View>
                 <View style={styles.orderSummaryItemContainer}>
@@ -29,7 +34,7 @@ const OrderSummary:React.FC = () => {
                         <Text style={[styles.orderSummaryLeftText,{fontSize:16}]}>Total</Text>
                     </View>
                     <View>  
-                        <Text style={{fontSize:16, fontWeight:'800'}}>₦2,003,450</Text>
+                        <Text style={{fontSize:16, fontWeight:'800'}}>₦{(deliveryFee+itemTotal).toLocaleString()}</Text>
                     </View>
                 </View>
             </View>

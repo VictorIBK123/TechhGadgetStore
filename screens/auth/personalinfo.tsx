@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { AntDesign, Feather, Fontisto } from '@expo/vector-icons';
 import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../../firebase-config';
+import { UserDetails } from '../../contexts/myContext';
 
 
 type PersonalInformationProps = NativeStackScreenProps<any>;
 
 const PersonalInformation: React.FC<PersonalInformationProps> = ({ navigation, route }) => {
+    const emailContext= useContext(UserDetails)
     const [values, setValues]= useState<{firstName: string, lastName: string, dateOfBirth: string, country: string,state:string, address1:string, address2:string, city:string, zip:string}>({
         firstName: '',
         lastName: '',
@@ -79,8 +83,16 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ navigation, r
                 break;
         }
     }
-    const continueButtonHandler =()=>{
-        console.log('valid')
+    const continueButtonHandler =async()=>{
+        // Add a new document in collection "cities"
+        try {
+            emailContext?.setUserEmail(route.params?.email)
+            await setDoc(doc(db, "users", route.params?.email), {...values, cart:[]});
+            navigation.navigate('main')
+        } catch (error) {
+            alert(error)
+        }
+
     }
     return (
         <ScrollView>

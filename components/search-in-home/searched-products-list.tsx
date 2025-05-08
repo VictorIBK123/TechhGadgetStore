@@ -1,40 +1,88 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Animated, ActivityIndicator } from 'react-native';
+import CategoriesList from '../home/categorieslist';
+import HotDealsComp from '../home/hotdealscomp';
+import HeaderComponent from '../home/headercomponent';
+import { NavigationProp } from '@react-navigation/native';
+import { CategoriesContext } from '../../contexts/myContext';
+import { ProductsData } from '../../Types/product_data';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase-config';
+import PopularComp from '../home/popular';
 
-interface SearchedProductsListProps {}
+interface SearchedProductsListProps {
+    navigation: NavigationProp<any>,
+    textToSearch: string,
+    categories: {name: string, key: string, img_url: string}[],
+    searchHeaderRef: React.RefObject<View>,
+}
 
-const SearchedProductsList: React.FC<SearchedProductsListProps> = () => {
-    const data = [{name:'Iphone 13 Pro  (256 GB)', source: require('../../assets/iphone-13-pro.png'), key:1, discountedPrice: (920050).toLocaleString(), originalPrice:(980050).toLocaleString()},
-        {name:'Iphone 16 Pro Max  (512 GB)', source: require('../../assets/iphone-16-pro-max.png'), key:2, discountedPrice: (1700050).toLocaleString(), originalPrice:(1750050).toLocaleString()},
-        {name:'Iphone 14  (256 GB)', source: require('../../assets/iphone-14.png'), key:3, discountedPrice:(900060).toLocaleString(), originalPrice: (950060).toLocaleString() },
-        {name:'Iphone 12  (128 GB) ', source: require('../../assets/iphone-12.png'), key:4, discountedPrice:(480060).toLocaleString(), originalPrice:(490060).toLocaleString()},
-        {name:'Iphone 14  (256 GB)', source: require('../../assets/iphone-14.png'), key:5, discountedPrice:(900060).toLocaleString(), originalPrice: (950060).toLocaleString() },
-        {name:'Iphone 12  (128 GB) ', source: require('../../assets/iphone-12.png'), key:6, discountedPrice:(480060).toLocaleString(), originalPrice:(490060).toLocaleString()},
-]
+const SearchedProductsList: React.FC<SearchedProductsListProps> = ({ navigation, textToSearch, categories, searchHeaderRef}) => {
+    const [searhResult, setSearchResult] = useState<ProductsData>([])
+    var snapShot;
+    useEffect(()=>{
+        var fetchedData:{
+            name: string;
+            key: string;
+            img_url: string;
+            price: string;
+            description: string;
+            inCart: boolean;
+        }[];
+        categories.forEach(async(element)=>{
+            snapShot = await getDocs(collection(db,element.name.toLowerCase() ))
+            snapShot.forEach((doc)=>{
+                fetchedData.push({
+                    key: `${doc.id}`, 
+                    name:doc.data().name,
+                    description:doc.data().description,  
+                    price:doc.data().price, 
+                    img_url:(doc.data().img_url),
+                    inCart: false //not needed here just put it to satisfy the product data type
+                })
+                console.log(fetchedData)
+            })
+            // console.log(fetchedData)
+            setSearchResult(fetchedData)
+        })
+    },[textToSearch])
+    
     return (
-        <FlatList
-        style={{flex:17/20, marginBottom:20}}
+        <View style={{flex:18/20,}}>
+        
+         <FlatList
+            style={{flex:1, marginBottom:0, display:textToSearch.length==0?'none':'flex'}}
+            ListEmptyComponent={()=><ActivityIndicator style={{alignSelf:'center'}} size={'large'} color={'#2F1528'} />}
             contentContainerStyle={{marginTop:20, paddingHorizontal:10, paddingBottom:50}}
-            data={data}
+            data={searhResult}
             numColumns={2}
             renderItem={({item})=>{
                 return(
                     <TouchableOpacity style={{flex:1/2, marginRight:3, marginBottom:10, backgroundColor:'white', borderRadius:4}}>
                         <View style={{justifyContent:'center', height:132}}>
-                            <Image style={{alignSelf:'center'}} source={item.source} />
+                            <Image style={{alignSelf:'center'}} source={{uri:item.img_url}} />
                         </View>
                         <Text style={{textAlign:'center', marginTop:10,marginVertical:5, fontSize:12, fontWeight:'400', paddingHorizontal:3}}>{item.name}</Text>
                         <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-evenly', paddingBottom:10}}>
-                            <Text adjustsFontSizeToFit={true} style={{textAlign:'center', fontSize:14, fontWeight:'700'}}>₦{item.discountedPrice}</Text>
-                            <Text style={{fontWeight:'500', fontSize:12, textAlign:'center', textDecorationLine:'line-through', textDecorationStyle:'solid', color:'#8E9295'}}>₦{item.originalPrice}</Text>
+                            <Text adjustsFontSizeToFit={true} style={{textAlign:'center', fontSize:14, fontWeight:'700'}}>₦{item.price}</Text>
+                            <Text style={{fontWeight:'500', fontSize:12, textAlign:'center', textDecorationLine:'line-through', textDecorationStyle:'solid', color:'#8E9295'}}>₦{item.price}</Text>
                         </View>
                         <TouchableOpacity style={{alignItems:'center', justifyContent:'center', backgroundColor:'#2F1528', paddingVertical:7, borderRadius:20, marginHorizontal:10, marginBottom:20}}>
                             <Text style={{color:'white'}}>Add to Cart</Text>
                         </TouchableOpacity>
                     </TouchableOpacity>
+                    
                 )
             }}
             />
+            <Animated.ScrollView style={{flex:1,display:textToSearch.length==0?'flex':'none'}}>
+                <View>
+                    <CategoriesList categories={categories} searchHeaderRef={searchHeaderRef} navigation={navigation} />
+                    <HotDealsComp categories={categories} navigation={navigation} />
+                    <PopularComp categories={categories} navigation={navigation} />
+                </View>
+            </Animated.ScrollView>
+            </View>
     );
 };
 

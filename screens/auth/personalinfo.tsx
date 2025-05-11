@@ -1,15 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { AntDesign, Feather, Fontisto } from '@expo/vector-icons';
 import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase-config';
 import { UserDetails } from '../../contexts/myContext';
+import { StatusBar } from 'expo-status-bar';
 
 
 type PersonalInformationProps = NativeStackScreenProps<any>;
 
 const PersonalInformation: React.FC<PersonalInformationProps> = ({ navigation, route }) => {
+    const [loading, setLoading] = useState<boolean>(false)
     const emailContext= useContext(UserDetails)
     const [values, setValues]= useState<{firstName: string, lastName: string, dateOfBirth: string, country: string,state:string, address1:string, address2:string, city:string, zip:string}>({
         firstName: '',
@@ -84,18 +86,22 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ navigation, r
         }
     }
     const continueButtonHandler =async()=>{
+        setLoading(true)
         // Add a new document in collection "cities"
         try {
             emailContext?.setUserEmail(route.params?.email)
             await setDoc(doc(db, "users", route.params?.email), {...values, cart:[]});
+            setLoading(false)
             navigation.navigate('main')
         } catch (error) {
+            setLoading(false)
             alert(error)
         }
 
     }
     return (
         <ScrollView>
+            <StatusBar style='light' backgroundColor='#2F1528' />
         <View style={styles.container}>
             <Text style={styles.label}>First name  *</Text>
             <View style={styles.inputView}>
@@ -174,6 +180,9 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ navigation, r
             </View>
             <TouchableOpacity disabled={!allInputsValid} onPress={continueButtonHandler} style={styles.signUpContainer}>
                 <Text style={styles.signUp}>Continue</Text>
+                <View style={{position:'absolute', alignContent:'center',justifyContent:'center', height:50, width:'100%'}}>
+                    <ActivityIndicator size={'large'} color={'blue'} animating={loading} />
+                </View>
             </TouchableOpacity>
         </View>
         </ScrollView>

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { AllUserDetails } from '../../contexts/myContext';
 
 interface HeaderComponentProps {
     onTextInputClicked: () => void;
@@ -9,10 +10,11 @@ interface HeaderComponentProps {
 }
 
 const HeaderComponent: React.FC<HeaderComponentProps> = ({headerSearchRef, onTextInputClicked, defaultTextInputConRef}) => {
+    const UserDetailsContextAll = useContext(AllUserDetails)
+    const { values } = UserDetailsContextAll || {};
     return (
         <View >
         <LinearGradient
-                
                 colors={['#572C4B', '#2F1528']}
                 style={{paddingHorizontal:13, borderBottomLeftRadius:30, borderBottomRightRadius:30}}
             >
@@ -23,8 +25,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({headerSearchRef, onTex
                             <Text style={{fontSize:12, color:'white'}}>Location</Text>
                         </View>
                         <TouchableOpacity style={{flexDirection:'row', alignItems:'center'}}>
-                            <Text style={{fontSize:12, color:'white', marginRight:10}}>Talents Apartments, UI</Text>
-                            <Image source={require('../../assets/drop.png')} />
+                            <Text style={{fontSize:12, color:'white', marginRight:10}}>{values?.address1}</Text>
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity style={{backgroundColor:'#FFFFFF1A', padding:10, borderRadius:50}}>

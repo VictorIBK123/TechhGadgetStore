@@ -9,11 +9,11 @@ type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({navigation}) => {
     return (
-        <View style={{flexDirection:'row', justifyContent:'space-between', paddingBottom:10,paddingHorizontal:15, backgroundColor:'white', paddingTop:40}}>
+        <View style={{elevation:10,flexDirection:'row', justifyContent:'space-between', paddingBottom:10,paddingHorizontal:15, backgroundColor:'white', paddingTop:40}}>
             <TouchableOpacity onPress={()=>navigation.goBack()}>
                 <Ionicons name="arrow-back-outline" size={24} color="black" />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate('main',{screen:'cart'})}>
                 <AntDesign name="shoppingcart" size={24} color="black"  />
             </TouchableOpacity>
         </View>

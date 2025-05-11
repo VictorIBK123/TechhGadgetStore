@@ -29,6 +29,7 @@ const CategoriesList:React.FC<CategoriesListProps> = ({navigation, categories, s
             </View>
             <FlatList
                 ListEmptyComponent={()=><ActivityIndicator size="large" color='#572C4B' style={{flex:1, justifyContent:'center', alignItems:'center'}} />}
+                scrollEnabled={false}
                 data={categories}
                 numColumns={4}
                 renderItem={({item,index})=>{

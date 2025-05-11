@@ -40,9 +40,7 @@ const SearchedProductsList: React.FC<SearchedProductsListProps> = ({ navigation,
                     img_url:(doc.data().img_url),
                     inCart: false //not needed here just put it to satisfy the product data type
                 })
-                console.log(fetchedData)
             })
-            // console.log(fetchedData)
             setSearchResult(fetchedData)
         })
     },[textToSearch])
@@ -75,7 +73,7 @@ const SearchedProductsList: React.FC<SearchedProductsListProps> = ({ navigation,
                 )
             }}
             />
-            <Animated.ScrollView style={{flex:1,display:textToSearch.length==0?'flex':'none'}}>
+            <Animated.ScrollView style={{flex:1,display:textToSearch.length==0?'flex':'none', marginBottom:80}}>
                 <View>
                     <CategoriesList categories={categories} searchHeaderRef={searchHeaderRef} navigation={navigation} />
                     <HotDealsComp categories={categories} navigation={navigation} />

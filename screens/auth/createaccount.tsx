@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import { NavigationProp } from '@react-navigation/native';
 import { auth } from '../../firebase-config';
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
+import { StatusBar } from 'expo-status-bar';
 
 const CreateAccount = ({navigation}: {navigation: NavigationProp<any>}) => {
     const [passwordVisible, setPasswordVisible] = React.useState(false);
@@ -77,6 +78,7 @@ const CreateAccount = ({navigation}: {navigation: NavigationProp<any>}) => {
         })} //validation
         >{({handleSubmit, handleBlur, handleChange, values, errors, touched, isValid})=>(
         <ScrollView>
+            <StatusBar style='light' backgroundColor='#2F1528'  />
         <View style={styles.container}>
             <Text  style={styles.label}>E-mail</Text>
             <View style={styles.inputView}>

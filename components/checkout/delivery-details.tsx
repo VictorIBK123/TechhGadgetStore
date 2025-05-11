@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { AllUserDetails } from '../../contexts/myContext';
 
 const DeliveryDetails = () => {
+    const allUserDetails = useContext(AllUserDetails)
     return (
         <View >
             <View style={{paddingHorizontal:10, paddingVertical:10, }}>
@@ -14,7 +16,7 @@ const DeliveryDetails = () => {
                         <Text style={styles.orderSummaryLeftText}>Customer name</Text>
                     </View>
                     <View>
-                        <Text style={{fontSize:14}}>Jamal Isiah</Text>
+                        <Text style={{fontSize:14}}>{allUserDetails?.values.firstName} {allUserDetails?.values.lastName}</Text>
                     </View>
                 </View>
                 <View style={[styles.orderSummaryItemContainer, {flexDirection:'row', justifyContent:'space-between'}]}>
@@ -37,7 +39,7 @@ const DeliveryDetails = () => {
                             <Text style={[styles.orderSummaryLeftText,]}>Delivery address</Text>
                         </View>
                         <View>  
-                            <Text style={{fontSize:14, fontWeight:'500'}}>Talents Apartments, University of Ibadan</Text>
+                            <Text style={{fontSize:14, fontWeight:'500'}}>{allUserDetails?.values.address1}</Text>
                         </View>
                     </View>
                     <TouchableOpacity style={{flexDirection:'row', alignItems:'center'}}>

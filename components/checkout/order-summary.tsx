@@ -18,7 +18,7 @@ const OrderSummary:React.FC<DeliveryDataTypes> = ({itemQuantity,itemTotal}) => {
                         <Text style={styles.orderSummaryLeftText}>Item total ({itemQuantity})</Text>
                     </View>
                     <View>
-                        <Text style={{fontSize:14}}>₦{itemTotal}</Text>
+                        <Text style={{fontSize:14}}>₦{itemTotal.toLocaleString()}</Text>
                     </View>
                 </View>
                 <View style={styles.orderSummaryItemContainer}>

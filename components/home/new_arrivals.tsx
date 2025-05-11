@@ -11,31 +11,32 @@ import { db } from '../../firebase-config';
 import useCheckCart from '../../hooks/check_cart';
 import useFetchDeals from '../../hooks/fetch_deals';
 
-const PopularComp = ({navigation, categories}: {navigation: NavigationProp<any>, categories:{name: string, key: string, img_url: string}[] }) => {
+const NewArrivalsComp = ({navigation, categories}: {navigation: NavigationProp<any>, categories:{name: string, key: string, img_url: string}[] }) => {
     const context = useContext(UserDetails)
     const categoryContext = useContext(CategoriesContext)
-    const [popularProductDetails, setPopularProductDetails] = useState<ProductsData>([])
+    const [newArrivals, setNewArrivals] = useState<ProductsData>([])
     useEffect(()=>{
         (async()=>{
             var queryResults: ProductsData=[]
-            queryResults = await useFetchDeals('popular',categories,context?.userEmail?context.userEmail:'')
-            setPopularProductDetails(queryResults)
+            queryResults = await useFetchDeals('new_arrivals',categories,context?.userEmail?context.userEmail:'')
+            setNewArrivals(queryResults)
         })()
     },[categories])
+    
     return (
         <View style={{marginTop:20, marginHorizontal:15, backgroundColor:'white', paddingVertical:10, paddingHorizontal:10, borderRadius:12}}>
             <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
                 <View  >
-                    <Text style={{fontWeight:'500', fontSize:16}}>Popular</Text>
+                    <Text style={{fontWeight:'500', fontSize:16}}>New Arrivals</Text>
                 </View>
-                <TouchableOpacity onPress={()=>navigation.navigate('products_in_deals',{productName: 'popular', categories})} style={{flexDirection:'row', alignItems:'center'}}>   
+                <TouchableOpacity onPress={()=>navigation.navigate('products_in_deals',{productName: 'new_arrivals', categories})} style={{flexDirection:'row', alignItems:'center'}}>   
                     <Text style={{fontSize:12, fontWeight:400}}>More</Text>
                     <Image source={require('../../assets/right.png')} />
                 </TouchableOpacity>
             </View>
             <FlatList
                 scrollEnabled={false}
-                data={popularProductDetails}
+                data={newArrivals}
                 numColumns={4}
                 renderItem={({item})=>{
                     return(
@@ -56,4 +57,4 @@ const PopularComp = ({navigation, categories}: {navigation: NavigationProp<any>,
 
 
 
-export default PopularComp;
+export default NewArrivalsComp ;

@@ -5,6 +5,7 @@ import HeaderComponent from '../../components/home/headercomponent';
 import CategoriesList from '../../components/home/categorieslist';
 import HotDealsComp from '../../components/home/hotdealscomp';
 import Header from '../../components/search-in-home/header';
+import HeaderSearch from '../../components/home/header_search';
 import SearchedProductsList from '../../components/search-in-home/searched-products-list';
 import { StatusBar } from 'expo-status-bar';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -13,6 +14,7 @@ import useGetDocs from '../../hooks/get_docs';
 import { UserDetails } from '../../contexts/myContext';
 import PopularComp from '../../components/home/popular';
 import { AnimatedScrollView } from 'react-native-reanimated/lib/typescript/reanimated2/component/ScrollView';
+import NewArrivalsComp from '../../components/home/new_arrivals';
 
 type HomeScreenNavigationProp = NavigationProp<any>;
 const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
@@ -25,7 +27,6 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
     const searchPageAnimatedStyle= useAnimatedStyle(()=>({top:searchTop.value}))
     const textInputRef = React.useRef<TextInput>(null);
     const defaultTextInputConRef = useRef<TouchableOpacity>(null);
-    const [showSearchBarOnly,setShowSearchBarOnly ] = useState<boolean>(false)
     const headerComponentScaleY = useSharedValue(1)
     const headerComponentOpacity = useSharedValue(1)
     const headerScaleY = useSharedValue(0)
@@ -59,16 +60,15 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
      }
     //  when scrolling down
     const handleScroll =(event: any)=>{
-            if (headerSearchRef.current){
+            if (defaultTextInputConRef.current){
                 defaultTextInputConRef.current?.measure((x, y, width, height, pX, pY)=>{
                     if (pY<=10 ){
                         headerComponentScaleY.value = withTiming(0,{duration:200})
                         headerComponentOpacity.value = withTiming(0,{duration:500})
-                        headerScaleY.value = withTiming(1,{duration:500})
+                        headerScaleY.value = withTiming(1,{duration:1000})
                         headerOpacity.value = withTiming(1,{duration:500})
-                        top.value = withTiming(-120,{duration:500})
+                        top.value = withTiming(-120,{duration:3000})
                     }
-                    
                 })
             }
     }
@@ -79,12 +79,12 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
         headerScaleY.value = withTiming(0,{duration:500})
         headerOpacity.value = withTiming(0,{duration:500})
         top.value = withTiming(0,{duration:500})
-        scrollViewRef.current?.scrollTo({x:0,y:0,animated:false})
+        scrollViewRef.current?.scrollTo({x:0,y:0,animated:true})
     }
     return (
         <View style={{ flex: 1, }}>
-            <Animated.View style={[{transformOrigin: 'center top', position:'absolute', zIndex:66, width:'100%', }, headerAnimatedStyle]}>
-                    <Header bringDownSearch2={bringDownSearch2}  textInputRef={textInputRef} setTextToSearch={setTextToSearch} onArrowBackClicked={bringDownSearch}  />
+            <Animated.View style={[{transformOrigin: 'center top', position:'absolute', zIndex:10, width:'100%', }, headerAnimatedStyle]}>
+                    <HeaderSearch bringDownSearch2={bringDownSearch2}  textInputRef={textInputRef} setTextToSearch={setTextToSearch}  />
             </Animated.View>
             <StatusBar style='light' backgroundColor='#572C4B' />
             <Animated.ScrollView ref={scrollViewRef} scrollEventThrottle={16} onScroll={handleScroll} style={[{},mainPageAnimatedStyle ]}>
@@ -96,12 +96,13 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
                         <CategoriesList categories={categoriesInHome} navigation={navigation} />
                         <HotDealsComp categories={categoriesInHome} navigation={navigation} />
                         <PopularComp categories={categoriesInHome} navigation={navigation} />
+                        <NewArrivalsComp categories={categoriesInHome} navigation={navigation} />
                     </Animated.View>
                     
                 </View>
             </Animated.ScrollView>
              
-            <Animated.View style={[{flex:1,position:'absolute',width, height,  }, searchPageAnimatedStyle]}>
+            <Animated.View style={[{flex:1,position:'absolute',width, height, zIndex:20 }, searchPageAnimatedStyle]}>
                 <Header  textInputRef={textInputRef} setTextToSearch={setTextToSearch} onArrowBackClicked={bringDownSearch}  />
                 <SearchedProductsList  searchHeaderRef={searchHeaderRef} categories={categoriesInHome} textToSearch={textToSearch} navigation={navigation} />
             </Animated.View>

@@ -62,7 +62,7 @@ const CartScreen = ({navigation}: {navigation: CartScreenNavigationProp}) => {
             setCartData( [...cartData.slice(0,index),{name: cartData[index].name, key: cartData[index].key, img_url: cartData[index].img_url, price:cartData[index].price, description:cartData[index].description, inCart: cartData[index].inCart, quantity: cartData[index].quantity!=undefined?cartData[index].quantity+1:0}, ...cartData.slice(index+1, cartData.length) ] )
         }
         else {
-            setCartData( [...cartData.slice(0,index),{name: cartData[index].name, key: cartData[index].key, img_url: cartData[index].img_url, price:cartData[index].price, description:cartData[index].description, inCart: cartData[index].inCart, quantity: cartData[index].quantity!=undefined && cartData[index].quantity>1 ?cartData[index].quantity-1:0}, ...cartData.slice(index+1, cartData.length) ] )
+            setCartData( [...cartData.slice(0,index),{name: cartData[index].name, key: cartData[index].key, img_url: cartData[index].img_url, price:cartData[index].price, description:cartData[index].description, inCart: cartData[index].inCart, quantity: cartData[index].quantity!=undefined && cartData[index].quantity>1 ?cartData[index].quantity-1:1}, ...cartData.slice(index+1, cartData.length) ] )
         }
     },[cartData,setCartData])
     return (

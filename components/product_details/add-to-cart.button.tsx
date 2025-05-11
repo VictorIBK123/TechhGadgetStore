@@ -7,18 +7,21 @@ import useGetDocs from '../../hooks/get_docs';
 
 
 
-const AddToCartButton: React.FC<any> = ({item, category}) => {
+const AddToCartButton: React.FC<any> = ({navigation,item, category}) => {
     const context = useContext(UserDetails)
     const [addingToCart, setAddingToCart]= useState<boolean>(false)
     const addToCartFunc = async(item: AProductData)=>{
+        setAddingToCart(true)
         await UseAddToCart(item.name,context?.userEmail, setAddingToCart )
-        await useGetDocs(category,setAddingToCart, context?.userEmail)
+        setAddingToCart(false)
+        navigation.navigate('main',{screen:'cart'})
+        
     }
     return (
         !item.inCart?
         <TouchableOpacity onPress={()=>(addToCartFunc(item))} style={styles.button} >
             <Text style={styles.buttonText}>Add to Cart</Text>
-            <ActivityIndicator color={'#2F1528'} size={'large'} animating={addingToCart} />
+            <ActivityIndicator style={{position:'absolute', marginTop:5}} color={'blue'} animating={addingToCart} size={'large'}  />
         </TouchableOpacity>:
         <TouchableOpacity style={styles.button} >
             <Text style={styles.buttonText}>Remove from Cart</Text>

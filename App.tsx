@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import CheckoutScreen from './screens/inStack_navigator/checkout';
 import SplashTabs from './screens/inStack_navigator/splashtabs';
 import MainTabs from './screens/inStack_navigator/main';
@@ -10,16 +10,64 @@ import PersonalInformation from './screens/auth/personalinfo';
 import Login from './screens/auth/login';
 import ProductsInCategory from './screens/inStack_navigator/products_in_category';
 import AllCategoriesComp from './screens/inStack_navigator/all_categories';
-import { useState } from 'react';
-import { CategoriesContext, UserDetails } from './contexts/myContext';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { AllUserDetails, CategoriesContext, UserDetails } from './contexts/myContext';
 import { ProductsData } from './Types/product_data';
 import ProductsInDeals from './screens/inStack_navigator/products_in_deals';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from './firebase-config';
 
 export default function App() {
   const Stack = createStackNavigator()
   const [userEmail, setUserEmail] = useState<string>('')
   const [categoriesGlobal, setCategoriesGlobal] = useState<{name: string, key: string, img_url: string}[]>([])
+  const [values, setValues] = useState<{
+      address1:string, 
+      address2:string, 
+      city: string, 
+      country:string, 
+      dateOfBirth: string, 
+      firstName:string, 
+      lastName: string, 
+      state: string, 
+      zip:string, 
+  }>({
+      address1: '',
+      address2: '',
+      city: '',
+      country: '',
+      dateOfBirth: '',
+      firstName: '',
+      lastName: '',
+      state: '',
+      zip: '',
+  })
+  useEffect(()=>{
+    (
+      async()=>{
+        if (userEmail.length>0){
+          const snapShot = await getDoc(doc(db,'users',userEmail))
+          const data = snapShot.data();
+          if (data) {
+            setValues({
+              address1: data.address1 || '',
+              address2: data.address2 || '',
+              city: data.city || '',
+              country: data.country || '',
+              dateOfBirth: data.dateOfBirth || '',
+              firstName: data.firstName || '',
+              lastName: data.lastName || '',
+              state: data.state || '',
+              zip: data.zip || '',
+            });
+          }
+          
+        }
+      }
+    )()
+  },[userEmail])
   return (
+    <AllUserDetails.Provider value={{values, setValues}}>
     <CategoriesContext.Provider value={{categoriesGlobal, setCategoriesGlobal}}>
       <UserDetails.Provider value={{userEmail, setUserEmail}}>
         <NavigationContainer>
@@ -38,6 +86,7 @@ export default function App() {
         </NavigationContainer>
       </UserDetails.Provider>
     </CategoriesContext.Provider>
+    </AllUserDetails.Provider>
   )
 }
 

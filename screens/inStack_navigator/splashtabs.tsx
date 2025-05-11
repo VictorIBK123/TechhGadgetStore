@@ -13,7 +13,6 @@ const Tab = createMaterialTopTabNavigator();
 export default function SplashTabs() {
     return (
         <View style={{ flex: 1 }}>
-            <StatusBar hidden />
             <Tab.Navigator screenOptions={{swipeEnabled:true, tabBarStyle: { display: 'none' } }}>
                 <Tab.Screen name="first" component={FirstView} />
                 <Tab.Screen name="second" component={SecondView} />

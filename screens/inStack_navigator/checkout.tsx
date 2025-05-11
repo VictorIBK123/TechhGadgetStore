@@ -17,9 +17,9 @@ const CheckoutScreen:React.FC<CheckoutScreenProps> = ({navigation, route}) => {
     const itemTotal = route.params?.itemTotal
     return (
         <View>
+            <StatusBar style='light' backgroundColor='#572C4B' />
             <Header navigation={navigation} />
             <ScrollView>
-            <StatusBar style='light' backgroundColor='black' /> 
                 <View style={styles.container}>
                     <OrderSummary itemQuantity={itemQuantity} itemTotal={itemTotal} />
                     <DeliveryDetails />

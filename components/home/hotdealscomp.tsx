@@ -35,6 +35,7 @@ const HotDealsComp = ({navigation, categories}: {navigation: NavigationProp<any>
                 </TouchableOpacity>
             </View>
             <FlatList
+                scrollEnabled={false}
                 data={hotDealsProductDetails}
                 numColumns={4}
                 renderItem={({item})=>{

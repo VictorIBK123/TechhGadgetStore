@@ -9,8 +9,9 @@ import { Formik } from 'formik';
 import { StatusBar } from 'expo-status-bar';
 import { useContext } from 'react';
 import { UserDetails } from '../../contexts/myContext';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-const Login = ({navigation}: {navigation: NavigationProp<any>}) => {
+const Login = ({navigation}: {navigation: StackNavigationProp<any>}) => {
     const [passwordVisible, setPasswordVisible] = useState(false)
     const emailContext= useContext(UserDetails)
     const loginSchema= Yup.object().shape({
@@ -27,7 +28,7 @@ const Login = ({navigation}: {navigation: NavigationProp<any>}) => {
       if (auth.currentUser?.emailVerified){
         setSigning(false)
         emailContext?.setUserEmail(values.email)
-        navigation.navigate('main')
+        navigation.replace('main')
       }
   })
   .catch((error)=>{

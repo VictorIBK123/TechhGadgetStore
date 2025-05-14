@@ -14,7 +14,6 @@ const Header: React.FC<HeaderProps> = ({onArrowBackClicked, textInputRef,setText
     return (
         <View  style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between', paddingTop:20, paddingBottom:5, paddingHorizontal:13, backgroundColor:'#ffffff',flex:2/20,}}>
             <TouchableOpacity onPress={()=>{
-                console.log('clicked')
                 onArrowBackClicked()
             }} style={{}}>
                 <Ionicons name="arrow-back-outline" size={24} color="black" />

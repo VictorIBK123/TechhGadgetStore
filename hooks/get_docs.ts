@@ -24,12 +24,9 @@ const useGetDocs =async(collectionName:string, setFunc:(data:any)=>void, userEma
                             img_url:(doc.data().img_url),
                             inCart: await useCheckCart('users', userEmail, doc.data().name,)
                         })
-                       
                     }
-                    
                 }))
                 setFunc(fetchedData)
-                
             }
             catch(error){
                 alert(error)

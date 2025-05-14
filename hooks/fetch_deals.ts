@@ -7,12 +7,13 @@ const useFetchDeals =async(type:string,categories: {name: string, key: string, i
     const snapShot = await getDocs(collection(db, type))
     var queryResults: ProductsData=[]
     const hotDealsProductName:string[]= snapShot.docs.map((element)=>element.data().name)    
-    
+    var querySnapShotLength = 0
         await Promise.all(
             categories.map(async(category:{name: string, key: string, img_url: string} )=>{
                 const productsRef = collection(db, category.name.toLowerCase())
                 const q= query(productsRef, where('name', 'in', hotDealsProductName ))
                 const querySnapshot = await getDocs(q)
+                querySnapShotLength+=querySnapshot.docs.length
                 querySnapshot.forEach(async(doc)=>{
                     queryResults.push({
                         key: `${doc.id}`, 
@@ -27,6 +28,4 @@ const useFetchDeals =async(type:string,categories: {name: string, key: string, i
         )
         return queryResults
     }
-    
-
 export default useFetchDeals

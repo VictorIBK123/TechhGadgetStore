@@ -1,4 +1,4 @@
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { collection, doc, getDocs, getFirestore, onSnapshot } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { app, db } from '../../firebase-config';
@@ -24,14 +24,14 @@ const ProductsInCategory: React.FC<ProductsInCategoryProps> = ({navigation, rout
                 navigation.setOptions({title: route.params?.productName.toUpperCase()})
                 await useGetDocs(route.params?.productName,setProducts, context?.userEmail)
             })()
+            const unSub= context?.userEmail?onSnapshot(doc(db,'users', context?.userEmail), async()=>await useGetDocs(route.params?.productName,setProducts, context?.userEmail)):undefined
+            return unSub
         },[])
     const addToCartFunc = async(item: AProductData)=>{
         await UseAddToCart(item.name,context?.userEmail, setAddingToCart )
-        await useGetDocs(route.params?.productName,setProducts, context?.userEmail)
     }
     const removeFromCartFunc = async(item: AProductData)=>{
         await UseRemoveFromCart(item.name,context?.userEmail, setRemovingFromCart )
-        await useGetDocs(route.params?.productName,setProducts, context?.userEmail)
     }
     const data = products
     return (

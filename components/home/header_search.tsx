@@ -15,7 +15,6 @@ const HeaderSearch: React.FC<HeaderProps> = ({ textInputRef,setTextToSearch, bri
         <View  style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between', paddingTop:20, paddingBottom:5, paddingHorizontal:13, backgroundColor:'#ffffff',flex:2/20,}}>
             <TouchableOpacity onPress={()=>{
                 if (bringDownSearch2!=undefined){
-                    console.log('headersearch')
                     bringDownSearch2()
                 }
                 

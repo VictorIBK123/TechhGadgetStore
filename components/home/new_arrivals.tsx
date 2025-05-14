@@ -38,16 +38,19 @@ const NewArrivalsComp = ({navigation, categories}: {navigation: NavigationProp<a
                 scrollEnabled={false}
                 data={newArrivals}
                 numColumns={4}
-                renderItem={({item})=>{
+                renderItem={({item, index})=>{
+                    
                     return(
+                        index<4 ?
                         <TouchableOpacity onPress={()=>navigation.navigate('product_details',{item})} style={{flex:1/4, marginRight:3}}>
                             <View style={{height:80, justifyContent:'center', borderWidth:1, borderColor:'#F7F7F7', alignSelf:'center'}}>
                                 <Image style={{height:80,width:80, resizeMode:'contain'}} source={{uri: item.img_url}} />
                             </View>
                             <Text style={{textAlign:'center', marginVertical:15, fontSize:12, fontWeight:'400', paddingHorizontal:3}}>{item.name}</Text>
-                            <Text adjustsFontSizeToFit={true} style={{textAlign:'center', fontSize:14, fontWeight:'700'}}>₦{parseFloat(item.price)}</Text>
+                            <Text adjustsFontSizeToFit={true} style={{textAlign:'center', fontSize:14, fontWeight:'700',}}>₦{parseFloat(item.price)}</Text>
                             <Text style={{fontWeight:'500', fontSize:12, textAlign:'center', textDecorationLine:'line-through', textDecorationStyle:'solid', color:'#8E9295'}}>₦{(parseFloat(item.price)+((10/100)*parseFloat(item.price))).toLocaleString()}</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity>:
+                        <></>
                     )
                 }}
                 />

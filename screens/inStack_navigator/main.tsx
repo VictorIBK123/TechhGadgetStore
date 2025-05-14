@@ -13,7 +13,7 @@ const Tab = createMaterialTopTabNavigator();
 export default function MainTabs() {
     return (
         <View style={{ flex: 1 }}>
-            <Tab.Navigator tabBarPosition='bottom' screenOptions={{swipeEnabled:false,tabBarStyle:{height:60} }}>
+            <Tab.Navigator  tabBarPosition='bottom' screenOptions={{swipeEnabled:false,tabBarStyle:{height:60}, animationEnabled:false }}>
                 <Tab.Screen name="home" options={{tabBarIcon:({focused, color})=>(focused? <Entypo name="home" size={24} color="black" />: <Feather name="home" size={24} color="black" /> ), title:'Home'}} component={HomeScreen} />
                 <Tab.Screen name="cart" options={{tabBarIcon:({focused, color})=>(focused? <Entypo name="shopping-cart" size={24} color="black" />: <AntDesign name="shoppingcart" size={24} color="black"  /> ), title:'Cart'}} component={CartScreen} />
                 <Tab.Screen name='profile_screen' options={{tabBarIcon:({focused, color})=>(focused? <Image source={require('../../assets/profile-dark.png')} style={{height:24, width:24}}/>: <Image source={require('../../assets/profile-light.png')} style={{height:24, width:24}}/> ), title:'Profile'}} component={ProfileScreen} />

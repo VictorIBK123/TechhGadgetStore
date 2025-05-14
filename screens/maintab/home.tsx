@@ -98,7 +98,6 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
                         <PopularComp categories={categoriesInHome} navigation={navigation} />
                         <NewArrivalsComp categories={categoriesInHome} navigation={navigation} />
                     </Animated.View>
-                    
                 </View>
             </Animated.ScrollView>
              

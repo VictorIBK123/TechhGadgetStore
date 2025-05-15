@@ -77,9 +77,10 @@ const CreateAccount = ({navigation}: {navigation: NavigationProp<any>}) => {
             confirmPassword: Yup.string().oneOf([Yup.ref('password'), undefined], 'Passwords must match').required('Please, confirm your password'),
         })} //validation
         >{({handleSubmit, handleBlur, handleChange, values, errors, touched, isValid})=>(
-        <ScrollView>
-            <StatusBar style='light' backgroundColor='#2F1528'  />
+        // <ScrollView>
         <View style={styles.container}>
+            <StatusBar style='light' backgroundColor='#2F1528'  />
+            <Text style={styles.header}>Create your account</Text>
             <Text  style={styles.label}>E-mail</Text>
             <View style={styles.inputView}>
                 <Fontisto style={styles.iconB4} name="email" size={18} color="black" />
@@ -109,6 +110,9 @@ const CreateAccount = ({navigation}: {navigation: NavigationProp<any>}) => {
                 {touched.password && errors.password && <Text style={{color:'#dd3333'}}>{errors.password}</Text>}
                 {touched.password && !errors.password && <Text style={{ color:'green'}}>Password rules passed</Text>}
             </View>
+            <View>
+                
+            </View>
             <Text style={styles.label}>Confirm Password</Text>
             <View style={styles.inputView}>
                 <AntDesign style={styles.iconB4} name="lock" size={18} color="black" />
@@ -131,7 +135,8 @@ const CreateAccount = ({navigation}: {navigation: NavigationProp<any>}) => {
                 <Text style={styles.alreadyHaveAccount}>Already have an account? <Text style={{color:'#2563EB'}}>Login</Text></Text>
             </TouchableOpacity>
         </View>
-        </ScrollView>)}
+        // </ScrollView>
+        )}
         </Formik>
     );
 };
@@ -140,12 +145,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop:30,
-        paddingHorizontal:20
+        paddingHorizontal:20,
+        justifyContent:'center',
+        alignItems:'center'
     },
     label:{
         alignItems:'center',
         fontSize:14,
-        marginBottom:10
+        marginBottom:10,
+        alignSelf:'flex-start'
     },
     inputView:{
         flexDirection:'row',
@@ -154,6 +162,7 @@ const styles = StyleSheet.create({
         paddingVertical:10,
         paddingHorizontal:20,
         borderRadius:10,
+        width:'100%'
     },
     iconB4:{
         alignSelf:'center',
@@ -170,11 +179,16 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         marginLeft:50
     },
+    header:{
+        fontSize:20,
+        marginBottom:20
+    },
     signUpContainer:{
         backgroundColor:'#2F1528',
         paddingVertical:15,
         borderRadius:20,
         marginTop:20,
+        width:'100%'
     },
     signUp:{
         textAlign:'center',

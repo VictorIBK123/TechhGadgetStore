@@ -1,9 +1,8 @@
 import React, { memo } from 'react';
-import { View, Text, StyleSheet, FlatList ,Image, TouchableHighlight, TouchableOpacity, ActivityIndicator} from 'react-native';
+import { View, Text,  FlatList , TouchableOpacity, ActivityIndicator} from 'react-native';
 
 import { NavigationProp } from '@react-navigation/native';
-import { AProductData, ProductsData } from '../../Types/product_data';
-import cartlist from './cartlist';
+import {  ProductsData } from '../../Types/product_data';
 import Cartlist from './cartlist';
 const OrderSummary = ({navigation, cartData, total, calcQuantity}: {navigation: NavigationProp<any>, cartData: ProductsData, total: number, calcQuantity:(operation:string, index:number)=>void}) => {
 

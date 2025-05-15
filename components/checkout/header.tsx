@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 
-import { StackNavigationProp } from '@react-navigation/stack';
 import { NavigationProp } from '@react-navigation/native';
 
 type HeaderProps = {

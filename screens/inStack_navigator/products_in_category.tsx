@@ -9,12 +9,16 @@ import UseAddToCart from '../../hooks/add_to_cart';
 import { UserDetails } from '../../contexts/myContext';
 import useGetDocs from '../../hooks/get_docs';
 import UseRemoveFromCart from '../../hooks/remove_from_cart';
+import { Snackbar } from 'react-native-paper';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 interface ProductsInCategoryProps{
     navigation: NavigationProp<any>;
     route: RouteProp<any>;
 }
 const ProductsInCategory: React.FC<ProductsInCategoryProps> = ({navigation, route}) => {
+    const [snackBarVisible, setSnackBarVisible] = useState<boolean>(false)
+    const [snackBarVisible1, setSnackBarVisible1] = useState<boolean>(false)
     const [addingToCart, setAddingToCart] = useState<boolean>(false)
     const [removingFromCart, setRemovingFromCart] = useState<boolean>(false)
     const context = useContext(UserDetails)
@@ -29,9 +33,11 @@ const ProductsInCategory: React.FC<ProductsInCategoryProps> = ({navigation, rout
         },[])
     const addToCartFunc = async(item: AProductData)=>{
         await UseAddToCart(item.name,context?.userEmail, setAddingToCart )
+        setSnackBarVisible(true)
     }
     const removeFromCartFunc = async(item: AProductData)=>{
         await UseRemoveFromCart(item.name,context?.userEmail, setRemovingFromCart )
+        setSnackBarVisible1(true)
     }
     const data = products
     return (
@@ -67,6 +73,24 @@ const ProductsInCategory: React.FC<ProductsInCategoryProps> = ({navigation, rout
                     )
             }}
             />
+            <Snackbar 
+                onDismiss={()=>setSnackBarVisible(false)}
+                visible={snackBarVisible}
+                duration={5000}
+                icon={()=><MaterialIcons name="cancel" size={24} color="white" />}
+                onIconPress={()=>setSnackBarVisible(false)}
+            >
+                <Text style={{color:'white'}}>Added to Cart successfully</Text>
+            </Snackbar>
+            <Snackbar 
+                onDismiss={()=>setSnackBarVisible1(false)}
+                visible={snackBarVisible1}
+                duration={5000}
+                icon={()=><MaterialIcons name="cancel" size={24} color="white" />}
+                onIconPress={()=>setSnackBarVisible1(false)}
+            >
+                <Text style={{color:'white'}}>Removed from cart successfully</Text>
+            </Snackbar>
             <ActivityIndicator size={'large'} color={'#2F1528'} style={{position:'absolute',alignSelf:'center',}} animating={addingToCart||removingFromCart}  />
         </View>
         

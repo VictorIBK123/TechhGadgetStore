@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import Header from '../../components/cart-components/header';
 import OrderSummary from '../../components/cart-components/order-summary';
 import { NavigationProp } from '@react-navigation/native';
@@ -66,10 +66,12 @@ const CartScreen = ({navigation}: {navigation: CartScreenNavigationProp}) => {
         }
     },[cartData,setCartData])
     return (
+        <SafeAreaView style={{flex:1}}>
         <View style={{flex:1}}>
             <Header navigation={navigation} />
             <OrderSummary navigation={navigation} cartData={cartData} total={total} calcQuantity={calcQuantity} />
         </View>
+        </SafeAreaView>
     );
 };
 

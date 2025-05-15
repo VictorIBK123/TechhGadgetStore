@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import {  StyleSheet, } from 'react-native';
 import CheckoutScreen from './screens/inStack_navigator/checkout';
 import SplashTabs from './screens/inStack_navigator/splashtabs';
 import MainTabs from './screens/inStack_navigator/main';
@@ -10,12 +10,12 @@ import PersonalInformation from './screens/auth/personalinfo';
 import Login from './screens/auth/login';
 import ProductsInCategory from './screens/inStack_navigator/products_in_category';
 import AllCategoriesComp from './screens/inStack_navigator/all_categories';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AllUserDetails, CategoriesContext, UserDetails } from './contexts/myContext';
-import { ProductsData } from './Types/product_data';
 import ProductsInDeals from './screens/inStack_navigator/products_in_deals';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from './firebase-config';
+import { PaperProvider } from 'react-native-paper';
 
 export default function App() {
   const Stack = createStackNavigator()
@@ -70,20 +70,22 @@ export default function App() {
     <AllUserDetails.Provider value={{values, setValues}}>
     <CategoriesContext.Provider value={{categoriesGlobal, setCategoriesGlobal}}>
       <UserDetails.Provider value={{userEmail, setUserEmail}}>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="splashtabs"  screenOptions={{headerTitleAlign:'center'}}>
-            <Stack.Screen name="splashtabs" options={{headerShown:false}} component={SplashTabs} />
-            <Stack.Screen name='create_account' options={{headerShown:true, title:'Create your account', headerTitleAlign:'center', headerStyle:{height:70}}} component={CreateAccount} />
-            <Stack.Screen name='personal_info' component={PersonalInformation} options={{title:'Personal Information'}} />
-            <Stack.Screen name='login' options={{headerShown:false}} component={Login} />
-            <Stack.Screen name="main" options={{headerShown:false}} component={MainTabs} />
-            <Stack.Screen name="product_details" options={{headerShown:false}} component={ProductDetails} />
-            <Stack.Screen name="checkout" options={{headerShown:false}} component={CheckoutScreen} />
-            <Stack.Screen name='products_in_category' options={{headerShown:true, title:'Products in Category',headerStyle:{height:70}}} component={ProductsInCategory} />
-            <Stack.Screen name='all_categories' options={{headerShown:true, title:'Categories',headerStyle:{height:70}}} component={AllCategoriesComp} />
-            <Stack.Screen name='products_in_deals' options={{headerShown:true, title:'Products in Deals',headerStyle:{height:70}}} component={ProductsInDeals} />
-          </Stack.Navigator>
+        <PaperProvider>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="splashtabs"  screenOptions={{headerTitleAlign:'center'}}>
+              <Stack.Screen name="splashtabs" options={{headerShown:false}} component={SplashTabs} />
+              <Stack.Screen name='create_account' options={{headerShown:false, title:'Create your account', headerTitleAlign:'center', headerStyle:{height:70}}} component={CreateAccount} />
+              <Stack.Screen name='personal_info' component={PersonalInformation} options={{title:'Personal Information'}} />
+              <Stack.Screen name='login' options={{headerShown:false}} component={Login} />
+              <Stack.Screen name="main" options={{headerShown:false}} component={MainTabs} />
+              <Stack.Screen name="product_details" options={{headerShown:false}} component={ProductDetails} />
+              <Stack.Screen name="checkout" options={{headerShown:false}} component={CheckoutScreen} />
+              <Stack.Screen name='products_in_category' options={{headerShown:true, title:'Products in Category',headerStyle:{height:70}}} component={ProductsInCategory} />
+              <Stack.Screen name='all_categories' options={{headerShown:true, title:'Categories',headerStyle:{height:70}}} component={AllCategoriesComp} />
+              <Stack.Screen name='products_in_deals' options={{headerShown:true, title:'Products in Deals',headerStyle:{height:70}}} component={ProductsInDeals} />
+            </Stack.Navigator>
         </NavigationContainer>
+        </PaperProvider>
       </UserDetails.Provider>
     </CategoriesContext.Provider>
     </AllUserDetails.Provider>

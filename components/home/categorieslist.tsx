@@ -1,9 +1,6 @@
 import { NavigationProp } from '@react-navigation/native';
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
-import React, {useContext, useEffect, useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity,Image, FlatList, ActivityIndicator } from 'react-native';
-import { app, db } from '../../firebase-config';
-import useGetDocs from '../../hooks/get_docs';
+import React, {useContext,} from 'react';
+import { View, Text,  TouchableOpacity,Image, FlatList, ActivityIndicator } from 'react-native';
 import { CategoriesContext, UserDetails } from '../../contexts/myContext';
 
 interface CategoriesListProps{

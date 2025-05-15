@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator, Pressable } from 'react-native';
 import { AntDesign, Feather, Fontisto } from '@expo/vector-icons';
 import * as Yup from 'yup';
-import { NavigationProp } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase-config';
 import { Formik } from 'formik';
@@ -10,9 +9,11 @@ import { StatusBar } from 'expo-status-bar';
 import { useContext } from 'react';
 import { UserDetails } from '../../contexts/myContext';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { Snackbar } from 'react-native-paper';
 
 const Login = ({navigation}: {navigation: StackNavigationProp<any>}) => {
-    const [passwordVisible, setPasswordVisible] = useState(false)
+    const [passwordVisible, setPasswordVisible] = useState<boolean>(false)
+    const [snackBarVisible, setSnackBarVisible] = useState<boolean>(false)
     const emailContext= useContext(UserDetails)
     const loginSchema= Yup.object().shape({
         email: Yup.string().email('Invalid email').required('Please, enter your email'),
@@ -26,6 +27,7 @@ const Login = ({navigation}: {navigation: StackNavigationProp<any>}) => {
     .then(async(userCredential) => {
       await auth.currentUser?.reload()
       if (auth.currentUser?.emailVerified){
+        setSnackBarVisible(true)
         setSigning(false)
         emailContext?.setUserEmail(values.email)
         navigation.replace('main')
@@ -81,6 +83,13 @@ const Login = ({navigation}: {navigation: StackNavigationProp<any>}) => {
             <TouchableOpacity onPress={()=>navigation.navigate('create_account')}>
                 <Text style={styles.alreadyHaveAccount}>Don’t have an account?  <Text style={{color:'#2563EB'}}>Sign up</Text></Text>
             </TouchableOpacity>
+            <Snackbar 
+                onDismiss={()=>setSnackBarVisible(false)}
+                visible={snackBarVisible}
+                duration={2000}
+            >
+                Logged in successfully
+            </Snackbar>
         </View>)}
         </Formik>
     );

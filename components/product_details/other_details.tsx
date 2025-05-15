@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, Text, } from 'react-native';
 import { AProductData } from '../../Types/product_data';
 import Markdown from 'react-native-markdown-display';
 

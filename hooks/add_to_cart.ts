@@ -1,7 +1,6 @@
-import { arrayUnion, doc, DocumentData, DocumentReference, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
 import { Dispatch, SetStateAction, useContext, useRef } from "react";
-import { UserDetails } from "../contexts/myContext";
 var usersRef: any
 
 const UseAddToCart =async(productName: string, userEmail:string='', setAddingToCart: Dispatch<SetStateAction<boolean>>)=>{

@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native';
+import { View, TextInput, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 interface HeaderProps {
@@ -12,7 +12,7 @@ interface HeaderProps {
 const HeaderSearch: React.FC<HeaderProps> = ({ textInputRef,setTextToSearch, bringDownSearch2}) => {
     
     return (
-        <View  style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between', paddingTop:20, paddingBottom:5, paddingHorizontal:13, backgroundColor:'#ffffff',flex:2/20,}}>
+        <View  style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between', paddingTop:40, paddingBottom:5, paddingHorizontal:13, backgroundColor:'#ffffff',flex:2/20,}}>
             <TouchableOpacity onPress={()=>{
                 if (bringDownSearch2!=undefined){
                     bringDownSearch2()

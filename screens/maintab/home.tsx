@@ -63,11 +63,11 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
             if (defaultTextInputConRef.current){
                 defaultTextInputConRef.current?.measure((x, y, width, height, pX, pY)=>{
                     if (pY<=10 ){
-                        headerComponentScaleY.value = withTiming(0,{duration:200})
-                        headerComponentOpacity.value = withTiming(0,{duration:500})
-                        headerScaleY.value = withTiming(1,{duration:1000})
-                        headerOpacity.value = withTiming(1,{duration:500})
-                        top.value = withTiming(-120,{duration:3000})
+                        headerComponentScaleY.value = withTiming(0,{duration:0})
+                        headerComponentOpacity.value = withTiming(0,{duration:0})
+                        headerScaleY.value = withTiming(1,{duration:0})
+                        headerOpacity.value = withTiming(1,{duration:0})
+                        top.value = withTiming(-120,{duration:0})
                     }
                 })
             }

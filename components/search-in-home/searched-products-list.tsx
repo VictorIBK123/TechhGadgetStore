@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Animated, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text,  FlatList, Image, TouchableOpacity, Animated, ActivityIndicator } from 'react-native';
 import CategoriesList from '../home/categorieslist';
 import HotDealsComp from '../home/hotdealscomp';
-import HeaderComponent from '../home/headercomponent';
 import { NavigationProp } from '@react-navigation/native';
-import { CategoriesContext } from '../../contexts/myContext';
 import { ProductsData } from '../../Types/product_data';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase-config';

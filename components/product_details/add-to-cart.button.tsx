@@ -1,15 +1,16 @@
 import React, { useContext, useState } from 'react';
-import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { AProductData, ProductsData } from '../../Types/product_data';
+import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, View } from 'react-native';
+import { AProductData, } from '../../Types/product_data';
 import UseAddToCart from '../../hooks/add_to_cart';
 import { UserDetails } from '../../contexts/myContext';
-import useGetDocs from '../../hooks/get_docs';
 import UseRemoveFromCart from '../../hooks/remove_from_cart';
+import { Snackbar } from 'react-native-paper';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 
-
-const AddToCartButton: React.FC<any> = ({navigation,item, category}) => {
+const AddToCartButton: React.FC<any> = ({item}) => {
     const context = useContext(UserDetails)
+    const [snackBarVisible, setSnackBarVisible] = useState<boolean>(false)
     const [inCartOnPage, setInCartOnPage] = useState<boolean>(item.inCart)
     const [addingToCart, setAddingToCart]= useState<boolean>(false)
     const [removingFromCart, setRemovingFromCart] = useState<boolean>(false)
@@ -17,6 +18,7 @@ const AddToCartButton: React.FC<any> = ({navigation,item, category}) => {
         setAddingToCart(true)
         try {
             await UseAddToCart(item.name,context?.userEmail, setAddingToCart )
+            setSnackBarVisible(true)
             setAddingToCart(false)
             setInCartOnPage(true)
         } catch (error) {
@@ -29,6 +31,7 @@ const AddToCartButton: React.FC<any> = ({navigation,item, category}) => {
         setRemovingFromCart(true)
         try {
             await UseRemoveFromCart(item.name,context?.userEmail, setAddingToCart )
+            setSnackBarVisible(true)
             setRemovingFromCart(false)
             setInCartOnPage(false)
         } catch (error) {
@@ -37,15 +40,28 @@ const AddToCartButton: React.FC<any> = ({navigation,item, category}) => {
         }
     }
     return (
-        !inCartOnPage?
+        <View>
+        {!inCartOnPage &&
         <TouchableOpacity onPress={()=>(addToCartFunc(item))} style={styles.button} >
             <Text style={styles.buttonText}>Add to Cart</Text>
             <ActivityIndicator style={{position:'absolute', marginTop:5}} color={'blue'} animating={addingToCart} size={'large'}  />
-        </TouchableOpacity>:
+        </TouchableOpacity>}
+        {inCartOnPage &&
         <TouchableOpacity onPress={()=>removeFromCartFunc(item)} style={styles.button} >
             <Text style={styles.buttonText}>Remove from Cart</Text>
             <ActivityIndicator style={{position:'absolute', marginTop:5}} color={'blue'} animating={removingFromCart} size={'large'}  />
-        </TouchableOpacity>
+        </TouchableOpacity>}
+        <Snackbar 
+            onDismiss={()=>setSnackBarVisible(false)}
+            visible={snackBarVisible}
+            duration={5000}
+            icon={()=><MaterialIcons name="cancel" size={24} color="white" />}
+            onIconPress={()=>setSnackBarVisible(false)}
+        >
+            {inCartOnPage && <Text style={{color:'white'}}>Added to Cart successfully</Text>}
+            {!inCartOnPage && <Text style={{color:'white'}}>Removed from cart successfully</Text>}
+        </Snackbar>
+        </View>
     );
 };
 

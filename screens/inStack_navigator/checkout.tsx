@@ -16,16 +16,16 @@ const CheckoutScreen:React.FC<CheckoutScreenProps> = ({navigation, route}) => {
     const itemQuantity= route.params?.itemQuantity
     const itemTotal = route.params?.itemTotal
     return (
-        <View>
+        <View style={{flex:1}}>
             <StatusBar style='light' backgroundColor='#572C4B' />
             <Header navigation={navigation} />
-            <ScrollView>
+            {/* <ScrollView> */}
                 <View style={styles.container}>
                     <OrderSummary itemQuantity={itemQuantity} itemTotal={itemTotal} />
                     <DeliveryDetails />
                     <PayButton />
                 </View>
-            </ScrollView>
+            {/* </ScrollView> */}
         </View>
         
     );

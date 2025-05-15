@@ -1,8 +1,7 @@
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc,  } from "firebase/firestore";
 import { db } from "../firebase-config";
 
 const useCheckCart =async(collectionName:string, email:string, productName:string):Promise<boolean>=>{
-    var inCart:boolean=false
     try {
         const snapshot1 = await getDoc(doc(db, collectionName, email));
         return (snapshot1.data()?.cart.includes(productName))

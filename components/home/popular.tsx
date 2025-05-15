@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text,  TouchableOpacity, FlatList } from 'react-native';
 import { Image } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
-import { CategoriesContext, UserDetails } from '../../contexts/myContext';
+import {  UserDetails } from '../../contexts/myContext';
 import { ProductsData } from '../../Types/product_data';
 import useFetchDeals from '../../hooks/fetch_deals';
 
 const PopularComp = ({navigation, categories}: {navigation: NavigationProp<any>, categories:{name: string, key: string, img_url: string}[] }) => {
     const context = useContext(UserDetails)
-    const categoryContext = useContext(CategoriesContext)
     const [popularProductDetails, setPopularProductDetails] = useState<ProductsData>([])
     useEffect(()=>{
         (async()=>{
@@ -39,7 +38,7 @@ const PopularComp = ({navigation, categories}: {navigation: NavigationProp<any>,
                             <View style={{height:80, justifyContent:'center', borderWidth:1, borderColor:'#F7F7F7', alignSelf:'center'}}>
                                 <Image style={{height:80,width:80, resizeMode:'contain'}} source={{uri: item.img_url}} />
                             </View>
-                            <Text style={{textAlign:'center', marginVertical:15, fontSize:12, fontWeight:'400', paddingHorizontal:3}}>{item.name}</Text>
+                            <Text style={{textAlign:'center', marginVertical:15, fontSize:12, fontWeight:'400', paddingHorizontal:3, height:60}}>{item.name}</Text>
                             <Text adjustsFontSizeToFit={true} style={{textAlign:'center', fontSize:14, fontWeight:'700'}}>₦{parseFloat(item.price)}</Text>
                             <Text style={{fontWeight:'500', fontSize:12, textAlign:'center', textDecorationLine:'line-through', textDecorationStyle:'solid', color:'#8E9295'}}>₦{(parseFloat(item.price)+((10/100)*parseFloat(item.price))).toLocaleString()}</Text>
                         </TouchableOpacity>:

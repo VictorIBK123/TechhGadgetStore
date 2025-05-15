@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, Image,TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AllUserDetails } from '../../contexts/myContext';
 

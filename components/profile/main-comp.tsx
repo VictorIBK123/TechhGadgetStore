@@ -11,20 +11,13 @@ import {
   TextInputProps,
   ActivityIndicator,
 } from 'react-native';
-import { db } from '../../firebase-config';
-import { AllUserDetails, UserDetails } from '../../contexts/myContext';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-interface ProfileData {
-  firstName: string;
-  lastName: string;
-  dateOfBirth: string;
-  address1: string;
-  address2: string;
-  city: string;
-  state: string;
-  zip: string;
-  country: string;
-}
+import { db } from '../../firebase-config';
+import {  UserDetails } from '../../contexts/myContext';
+import { Snackbar } from 'react-native-paper';
+
+
 
 interface InputProps extends TextInputProps {
   inputDisabled: boolean,
@@ -51,6 +44,7 @@ interface MainCompProps{
 }
 export const MainComp: React.FC<MainCompProps> = ({setInputDisabled, inputDisabled, allUserDetails}) => {
   const [sthChanged, setSthChanged] = useState<boolean>(false)
+  const [snackBarVisible, setSnackBarVisible] = useState<boolean>(false)
   const userEmailContext = useContext(UserDetails)
    const [saving, setSaving] = useState<boolean>(false)
   const [firstName, setFirstName] = useState<string>(allUserDetails?.values.firstName || '');
@@ -112,6 +106,7 @@ export const MainComp: React.FC<MainCompProps> = ({setInputDisabled, inputDisabl
         firstName,lastName,dateOfBirth,address1,address2,city,state,zip,country
       })
       .then(()=>{
+        setSnackBarVisible(true)
         setSthChanged(false)
         setInputDisabled(true);
         allUserDetails?.setValues({firstName,lastName,dateOfBirth,address1,address2,city,state,zip,country});
@@ -173,7 +168,15 @@ export const MainComp: React.FC<MainCompProps> = ({setInputDisabled, inputDisabl
       {inputDisabled && <TouchableOpacity onPress={()=>setInputDisabled(false)} style={styles.saveButton}>
         <Text style={styles.saveButtonText}>EDIT PROFILE</Text>
       </TouchableOpacity>}
-      
+      <Snackbar 
+        onDismiss={()=>setSnackBarVisible(false)}
+        visible={snackBarVisible}
+        duration={5000}
+        icon={()=><MaterialIcons name="cancel" size={24} color="white" />}
+        onIconPress={()=>setSnackBarVisible(false)}
+    >
+        <Text style={{color:'white'}}>Profile updated successfully!</Text>
+    </Snackbar>
     </ScrollView>
     </View>
   );
@@ -191,6 +194,7 @@ const Input: React.FC<InputProps> = ({inputDisabled, label, value, onChangeText,
       placeholderTextColor="#999"
       {...props}
     />
+    
   </View>
 );
 

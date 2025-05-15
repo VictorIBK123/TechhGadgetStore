@@ -6,7 +6,7 @@ import { AllUserDetails } from '../../contexts/myContext';
 const DeliveryDetails = () => {
     const allUserDetails = useContext(AllUserDetails)
     return (
-        <View >
+        <View style={{flex:4.8/10}}>
             <View style={{paddingHorizontal:10, paddingVertical:10, }}>
                 <Text style={{fontSize:14, fontWeight:'500'}}>Delivery details</Text>
             </View>

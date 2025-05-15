@@ -1,4 +1,4 @@
-import { View } from "react-native"
+import { SafeAreaView, View } from "react-native"
 import Header from "../../components/profile/header"
 import React, { useContext, useState } from "react"
 import { NavigationProp } from "@react-navigation/native"
@@ -13,9 +13,9 @@ export const ProfileScreen:React.FC<ProfileScreenProps> =({navigation})=>{
     const allUserDetails= useContext(AllUserDetails)
     const [inputDisabled, setInputDisabled] = useState<boolean>(true)
     return (
-        <View style={{flex:1}}>
+        <SafeAreaView style={{flex:1}}>
             <Header navigation={navigation}/>
             <MainComp allUserDetails={allUserDetails} setInputDisabled={setInputDisabled} inputDisabled={inputDisabled} />
-        </View>
+        </SafeAreaView>
     )
 }

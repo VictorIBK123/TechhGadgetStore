@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, Text,  TouchableHighlight } from 'react-native';
 
 interface QuantityCalcProps {
     initialQuantity?: number;

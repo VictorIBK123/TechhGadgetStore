@@ -1,7 +1,5 @@
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore"
 import { db } from "../firebase-config"
-import { useEffect } from "react"
-import useGetDocs from "./get_docs"
 import { ProductsData } from "../Types/product_data"
 
 export const useGetCartProducts =async(userEmail:string, categories:{name: string, key: string, img_url: string}[],)=>{

@@ -1,21 +1,23 @@
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { app, db } from '../../firebase-config';
+import { View, Text,  FlatList, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { AProductData, ProductsData } from '../../Types/product_data';
 import { useContext } from 'react';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import UseAddToCart from '../../hooks/add_to_cart';
 import { UserDetails } from '../../contexts/myContext';
-import useGetDocs from '../../hooks/get_docs';
 import UseRemoveFromCart from '../../hooks/remove_from_cart';
 import useFetchDeals from '../../hooks/fetch_deals';
+import { Snackbar } from 'react-native-paper';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+
 
 interface ProductsInCategoryProps{
     navigation: NavigationProp<any>;
     route: RouteProp<any>;
 }
 const ProductsInDeals: React.FC<ProductsInCategoryProps> = ({navigation, route}) => {
+    const [snackBarVisible, setSnackBarVisible] = useState<boolean>(false)
+    const [snackBarVisible1, setSnackBarVisible1] = useState<boolean>(false)
     const [addingToCart, setAddingToCart] = useState<boolean>(false)
     const [removingFromCart, setRemovingFromCart] = useState<boolean>(false)
     const context = useContext(UserDetails)
@@ -30,12 +32,14 @@ const ProductsInDeals: React.FC<ProductsInCategoryProps> = ({navigation, route})
         },[route.params?.categories])
     const addToCartFunc = async(item: AProductData)=>{
         await UseAddToCart(item.name,context?.userEmail, setAddingToCart )
+        setSnackBarVisible(true)
         var queryResults: ProductsData=[]
         queryResults = await useFetchDeals(route.params?.productName,route.params?.categories,context?.userEmail?context.userEmail:'')
         setProducts(queryResults)    }
 
     const removeFromCartFunc = async(item: AProductData)=>{
         await UseRemoveFromCart(item.name,context?.userEmail, setRemovingFromCart )
+        setSnackBarVisible1(true)
         var queryResults: ProductsData=[]
         queryResults = await useFetchDeals(route.params?.productName,route.params?.categories,context?.userEmail?context.userEmail:'')
         setProducts(queryResults)    }
@@ -73,6 +77,24 @@ const ProductsInDeals: React.FC<ProductsInCategoryProps> = ({navigation, route})
                     )
             }}
             />
+            <Snackbar 
+                onDismiss={()=>setSnackBarVisible(false)}
+                visible={snackBarVisible}
+                duration={5000}
+                icon={()=><MaterialIcons name="cancel" size={24} color="white" />}
+                onIconPress={()=>setSnackBarVisible(false)}
+            >
+                <Text style={{color:'white'}}>Added to Cart successfully</Text>
+            </Snackbar>
+            <Snackbar 
+                onDismiss={()=>setSnackBarVisible1(false)}
+                visible={snackBarVisible1}
+                duration={5000}
+                icon={()=><MaterialIcons name="cancel" size={24} color="white" />}
+                onIconPress={()=>setSnackBarVisible1(false)}
+            >
+                <Text style={{color:'white'}}>Removed from cart successfully</Text>
+            </Snackbar>
             <ActivityIndicator size={'large'} color={'#2F1528'} style={{position:'absolute',alignSelf:'center',}} animating={addingToCart||removingFromCart}  />
         </View>
         

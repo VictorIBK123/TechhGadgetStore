@@ -1,7 +1,6 @@
-import { arrayRemove, arrayUnion, doc, DocumentData, DocumentReference, updateDoc } from "firebase/firestore";
+import { arrayRemove,  doc,  updateDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
-import { Dispatch, SetStateAction, useContext, useRef } from "react";
-import { UserDetails } from "../contexts/myContext";
+import { Dispatch, SetStateAction,  } from "react";
 var usersRef: any
 
 const UseRemoveFromCart =async(productName: string, userEmail:string='', setRemovingFromCart: Dispatch<SetStateAction<boolean>>)=>{

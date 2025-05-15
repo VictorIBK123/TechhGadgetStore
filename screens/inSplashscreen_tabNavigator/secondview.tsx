@@ -3,8 +3,9 @@ import React from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity,Image, Dimensions } from 'react-native';
 
 import { NavigationProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-const SecondView = ({navigation}: {navigation: NavigationProp<any>}) => {
+const SecondView = ({navigation}: {navigation: StackNavigationProp<any>}) => {
     const {height, width} = Dimensions.get('screen');
     return (
         <ImageBackground  source={require('../../assets/latestgadgets.png')} style={{ backgroundColor:'white', flex:1}} imageStyle={{ flex:1,height ,width, resizeMode:'cover',opacity:1 }}   >
@@ -13,7 +14,7 @@ const SecondView = ({navigation}: {navigation: NavigationProp<any>}) => {
         colors={['#00000000', '#000000F7']}
         style={{flex:1, justifyContent:'flex-end'}}
         >
-            <TouchableOpacity onPress={()=>navigation.navigate('create_account')} style={{position:'absolute', backgroundColor:'#00000026', paddingHorizontal:30, paddingVertical:10, borderRadius:30, top:30, right:20}} >
+            <TouchableOpacity onPress={()=>navigation.replace('create_account')} style={{position:'absolute', backgroundColor:'#00000026', paddingHorizontal:30, paddingVertical:10, borderRadius:30, top:30, right:20}} >
                 <Text style={{color:'white', fontSize:14}}>Skip</Text>
             </TouchableOpacity>
         <View style={{paddingHorizontal:15, marginBottom:60, justifyContent:'space-between', flex:2/5}} >

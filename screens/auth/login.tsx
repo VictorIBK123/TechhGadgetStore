@@ -80,7 +80,7 @@ const Login = ({navigation}: {navigation: StackNavigationProp<any>}) => {
                 <Text style={styles.signUp}>Log In</Text>
                 <ActivityIndicator style={{position:'absolute', alignSelf:'center', top:'30%'}} size="large" color="#0000ff" animating={signing} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=>navigation.navigate('create_account')}>
+            <TouchableOpacity onPress={()=>navigation.replace('create_account')}>
                 <Text style={styles.alreadyHaveAccount}>Don’t have an account?  <Text style={{color:'#2563EB'}}>Sign up</Text></Text>
             </TouchableOpacity>
             <Snackbar 

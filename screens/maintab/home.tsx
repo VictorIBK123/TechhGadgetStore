@@ -31,6 +31,7 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
     const headerComponentOpacity = useSharedValue(1)
     const headerScaleY = useSharedValue(0)
     const headerOpacity = useSharedValue(0)
+    const headerTop = useSharedValue(-100)
     const top = useSharedValue(0) //80
     // This is for the home screen
     const headerSearchRef = useRef<View>(null)
@@ -38,7 +39,7 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
     const searchHeaderRef = useRef<View>(null)
     const scrollViewRef = useRef<AnimatedScrollView>(null)
     const context = useContext(UserDetails)
-    const headerAnimatedStyle = useAnimatedStyle(()=>({transform:[{scaleY:headerScaleY.value}], opacity:headerOpacity.value}))
+    const headerAnimatedStyle = useAnimatedStyle(()=>({transform:[{scaleY:headerScaleY.value}], opacity:headerOpacity.value, top:headerTop.value}))
     const headerComponentAnimatedStyle = useAnimatedStyle(()=>({transform:[{scaleY:headerComponentScaleY.value}], opacity:headerComponentOpacity.value}))
     const topStyle =useAnimatedStyle(()=>({top:top.value}))
 
@@ -68,6 +69,7 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
                         headerScaleY.value = withTiming(1,{duration:0})
                         headerOpacity.value = withTiming(1,{duration:0})
                         top.value = withTiming(-120,{duration:0})
+                        headerTop.value = withTiming(0,{duration:0})
                     }
                 })
             }
@@ -80,6 +82,7 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
         headerOpacity.value = withTiming(0,{duration:500})
         top.value = withTiming(0,{duration:500})
         scrollViewRef.current?.scrollTo({x:0,y:0,animated:true})
+        headerTop.value = withTiming(-100,{duration:500})
     }
     return (
         <View style={{ flex: 1, }}>

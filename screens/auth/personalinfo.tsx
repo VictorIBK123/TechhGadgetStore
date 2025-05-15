@@ -92,7 +92,7 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ navigation, r
             emailContext?.setUserEmail(route.params?.email)
             await setDoc(doc(db, "users", route.params?.email), {...values, cart:[]});
             setLoading(false)
-            navigation.navigate('main')
+            navigation.replace('main')
         } catch (error) {
             setLoading(false)
             alert(error)

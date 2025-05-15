@@ -4,12 +4,12 @@ import { AntDesign, Feather, Fontisto } from '@expo/vector-icons';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { NavigationProp } from '@react-navigation/native';
 import { auth } from '../../firebase-config';
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 import { StatusBar } from 'expo-status-bar';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-const CreateAccount = ({navigation}: {navigation: NavigationProp<any>}) => {
+const CreateAccount = ({navigation}: {navigation: StackNavigationProp<any>}) => {
     const [passwordVisible, setPasswordVisible] = React.useState(false);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = React.useState(false);
     const [signedUp, setSignedUp] = React.useState(false);
@@ -36,7 +36,7 @@ const CreateAccount = ({navigation}: {navigation: NavigationProp<any>}) => {
                 }).catch((error) => {
                   alert(error.message)
                 });
-                navigation.navigate('personal_info', {email: values.email, username: values.username})
+                navigation.replace('personal_info', {email: values.email, username: values.username})
                 clearInterval(interval)
               } 
             }
@@ -131,7 +131,7 @@ const CreateAccount = ({navigation}: {navigation: NavigationProp<any>}) => {
                 <Text style={styles.signUp}>Sign up</Text>
                 <ActivityIndicator size='large' color="white" animating={loading} style={{position:'absolute', alignSelf:'center', top:'30%'}} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=>navigation.navigate('login')}>
+            <TouchableOpacity onPress={()=>navigation.replace('login')}>
                 <Text style={styles.alreadyHaveAccount}>Already have an account? <Text style={{color:'#2563EB'}}>Login</Text></Text>
             </TouchableOpacity>
         </View>

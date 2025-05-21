@@ -13,5 +13,5 @@ interface valuesType{
     zip:string, 
 }
 export const AllUserDetails = createContext<{values: valuesType, setValues: Dispatch<SetStateAction<valuesType>>  }|undefined>(undefined)
-export const UserDetails = createContext<{userEmail:string, setUserEmail: Dispatch<SetStateAction<string>>    }|undefined>(undefined);
+export const UserDetails = createContext<{userEmail:string|undefined, setUserEmail: Dispatch<SetStateAction<string|undefined>>    }|undefined>(undefined);
 export const CategoriesContext = createContext<{categoriesGlobal: categoriesType, setCategoriesGlobal: setCategoriesType}|undefined>(undefined)

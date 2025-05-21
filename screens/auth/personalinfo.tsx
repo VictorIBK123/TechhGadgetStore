@@ -101,7 +101,7 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ navigation, r
     }
     return (
         <ScrollView>
-            <StatusBar style='light' backgroundColor='#2F1528' />
+            <StatusBar style='light' translucent={false} backgroundColor='#2F1528' />
         <View style={styles.container}>
             <Text style={styles.label}>First name  *</Text>
             <View style={styles.inputView}>
@@ -178,13 +178,10 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ navigation, r
                     {!valids.zip && <Text style={{color:'#dd3333'}}>Please enter your postal/zip code correctly</Text>}
                     {valids.zip && <Text style={{ color:'green'}}>Input rules passed</Text>}
             </View>
-            <TouchableOpacity disabled={!allInputsValid} onPress={continueButtonHandler} style={styles.signUpContainer}>
+            {!loading && <TouchableOpacity disabled={!allInputsValid} onPress={continueButtonHandler} style={styles.signUpContainer}>
                 <Text style={styles.signUp}>Continue</Text>
-                <View style={{position:'absolute', alignContent:'center',justifyContent:'center', height:50, width:'100%'}}>
-                    <ActivityIndicator size={'large'} color={'blue'} animating={loading} />
-                </View>
-            </TouchableOpacity>
-        </View>
+            </TouchableOpacity>}
+            { loading && <ActivityIndicator size={'large'} color={'blue'} animating={loading} />}        </View>
         </ScrollView>
     );
 };

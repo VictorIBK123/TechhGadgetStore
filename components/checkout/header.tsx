@@ -11,7 +11,7 @@ type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({navigation}) => {
     return (
-        <View style={{flexDirection:'row', alignItems:'center', backgroundColor:'#ffff', paddingTop:40,paddingBottom:20, paddingHorizontal:10, position:'absolute', width:'100%', zIndex:20}}>
+        <View style={{flexDirection:'row', alignItems:'center', backgroundColor:'#ffff', paddingTop:20,paddingBottom:20, paddingHorizontal:10, width:'100%', zIndex:20, flex:0.4/10}}>
             <TouchableOpacity style={{marginRight:30}} onPress={()=>navigation.goBack()}>
                 <Ionicons name="arrow-back-outline" size={24} color="black" />
             </TouchableOpacity>

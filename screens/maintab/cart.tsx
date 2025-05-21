@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import Header from '../../components/cart-components/header';
 import OrderSummary from '../../components/cart-components/order-summary';
 import { NavigationProp } from '@react-navigation/native';
@@ -8,7 +8,9 @@ import { CategoriesContext, UserDetails } from '../../contexts/myContext';
 import { ProductsData } from '../../Types/product_data';
 import useGetDocs from '../../hooks/get_docs';
 import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '../../firebase-config';
+import { auth, db } from '../../firebase-config';
+import { StatusBar } from 'expo-status-bar';
+import { onAuthStateChanged } from 'firebase/auth';
 
 type CartScreenNavigationProp = NavigationProp<any>;
 
@@ -65,14 +67,30 @@ const CartScreen = ({navigation}: {navigation: CartScreenNavigationProp}) => {
             setCartData( [...cartData.slice(0,index),{name: cartData[index].name, key: cartData[index].key, img_url: cartData[index].img_url, price:cartData[index].price, description:cartData[index].description, inCart: cartData[index].inCart, quantity: cartData[index].quantity!=undefined && cartData[index].quantity>1 ?cartData[index].quantity-1:1}, ...cartData.slice(index+1, cartData.length) ] )
         }
     },[cartData,setCartData])
-    return (
-        <SafeAreaView style={{flex:1}}>
-        <View style={{flex:1}}>
-            <Header navigation={navigation} />
-            <OrderSummary navigation={navigation} cartData={cartData} total={total} calcQuantity={calcQuantity} />
-        </View>
-        </SafeAreaView>
-    );
+    if (userContext?.userEmail) {
+        return (
+            <View style={{flex:1}}>
+                <StatusBar style='light' translucent={false} backgroundColor='#572C4B' />
+                <Header navigation={navigation} />
+                <OrderSummary navigation={navigation} cartData={cartData} total={total} calcQuantity={calcQuantity} />
+            </View>
+        );
+    }
+    else{
+        return(
+            <View style={{justifyContent:'center', alignItems:'center',flexDirection:'row', flex:1, marginHorizontal:10}}>
+                <TouchableOpacity onPress={()=>navigation.navigate('login')}>
+                    <Text style={{color:'blue', fontSize:16}}>Login</Text>
+                </TouchableOpacity>
+                <Text style={{marginHorizontal:10}}>or</Text>
+                <TouchableOpacity onPress={()=>navigation.navigate('create_account')}>
+                    <Text style={{color:'blue', fontSize:16}}>Sign Up</Text>
+                </TouchableOpacity>
+                <Text style={{marginHorizontal:10}}>to continue</Text>
+            </View>
+        )
+    }
+    
 };
 
 

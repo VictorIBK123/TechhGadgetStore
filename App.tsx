@@ -14,12 +14,14 @@ import { useEffect, useState } from 'react';
 import { AllUserDetails, CategoriesContext, UserDetails } from './contexts/myContext';
 import ProductsInDeals from './screens/inStack_navigator/products_in_deals';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from './firebase-config';
+import { auth, db } from './firebase-config';
 import { PaperProvider } from 'react-native-paper';
+import { StatusBar } from 'expo-status-bar';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function App() {
   const Stack = createStackNavigator()
-  const [userEmail, setUserEmail] = useState<string>('')
+  const [userEmail, setUserEmail] = useState<string|undefined>('')
   const [categoriesGlobal, setCategoriesGlobal] = useState<{name: string, key: string, img_url: string}[]>([])
   const [values, setValues] = useState<{
       address1:string, 
@@ -45,7 +47,7 @@ export default function App() {
   useEffect(()=>{
     (
       async()=>{
-        if (userEmail.length>0){
+        if (userEmail && userEmail.length>0){
           const snapShot = await getDoc(doc(db,'users',userEmail))
           const data = snapShot.data();
           if (data) {
@@ -66,11 +68,19 @@ export default function App() {
       }
     )()
   },[userEmail])
+  useEffect(()=>{
+    onAuthStateChanged(auth, (user)=>{
+      if (!auth.currentUser?.email){
+        setUserEmail(undefined)
+      }
+    })
+  },[])
   return (
     <AllUserDetails.Provider value={{values, setValues}}>
     <CategoriesContext.Provider value={{categoriesGlobal, setCategoriesGlobal}}>
       <UserDetails.Provider value={{userEmail, setUserEmail}}>
         <PaperProvider>
+          <StatusBar style='light' translucent={false} backgroundColor='#572C4B' />
           <NavigationContainer>
             <Stack.Navigator initialRouteName="splashtabs"  screenOptions={{headerTitleAlign:'center'}}>
               <Stack.Screen name="splashtabs" options={{headerShown:false}} component={SplashTabs} />

@@ -12,13 +12,8 @@ interface HeaderProps {
 const HeaderSearch: React.FC<HeaderProps> = ({ textInputRef,setTextToSearch, bringDownSearch2}) => {
     
     return (
-        <View  style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between', paddingTop:40, paddingBottom:5, paddingHorizontal:13, backgroundColor:'#ffffff',flex:2/20,}}>
-            <TouchableOpacity onPress={()=>{
-                if (bringDownSearch2!=undefined){
-                    bringDownSearch2()
-                }
-                
-            }} style={{}}>
+        <View  style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between', paddingTop:10, paddingBottom:5, paddingHorizontal:13, backgroundColor:'#ffffff',flex:2/20,}}>
+            <TouchableOpacity onPress={bringDownSearch2 } style={{}}>
                 <Ionicons name="arrow-back-outline" size={24} color="black" />
             </TouchableOpacity>
             <View style={{backgroundColor:'#FBFBFB',paddingVertical:5, borderRadius:30, paddingHorizontal:30,width:'70%', borderWidth:1, borderColor:'#f1f1f1'}}>

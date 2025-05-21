@@ -4,9 +4,7 @@ import { View, Text, StyleSheet, Image, TextInput, ScrollView, Dimensions, Touch
 import HeaderComponent from '../../components/home/headercomponent';
 import CategoriesList from '../../components/home/categorieslist';
 import HotDealsComp from '../../components/home/hotdealscomp';
-import Header from '../../components/search-in-home/header';
 import HeaderSearch from '../../components/home/header_search';
-import SearchedProductsList from '../../components/search-in-home/searched-products-list';
 import { StatusBar } from 'expo-status-bar';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { NavigationProp } from '@react-navigation/native';
@@ -15,6 +13,7 @@ import { UserDetails } from '../../contexts/myContext';
 import PopularComp from '../../components/home/popular';
 import { AnimatedScrollView } from 'react-native-reanimated/lib/typescript/reanimated2/component/ScrollView';
 import NewArrivalsComp from '../../components/home/new_arrivals';
+import { auth } from '../../firebase-config';
 
 type HomeScreenNavigationProp = NavigationProp<any>;
 const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
@@ -22,9 +21,7 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
     const [categoriesInHome, setCategoriesInHome] = useState<{name: string, key: string, img_url: string}[]>([])
     const [textToSearch, setTextToSearch] = useState<string>('')
     const mainPageOpacity = useSharedValue(1)
-    const searchTop = useSharedValue(height+20)
     const mainPageAnimatedStyle= useAnimatedStyle(()=>({opacity:mainPageOpacity.value}))
-    const searchPageAnimatedStyle= useAnimatedStyle(()=>({top:searchTop.value}))
     const textInputRef = React.useRef<TextInput>(null);
     const defaultTextInputConRef = useRef<TouchableOpacity>(null);
     const headerComponentScaleY = useSharedValue(1)
@@ -36,29 +33,27 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
     // This is for the home screen
     const headerSearchRef = useRef<View>(null)
     // This is for the search screen
-    const searchHeaderRef = useRef<View>(null)
     const scrollViewRef = useRef<AnimatedScrollView>(null)
     const context = useContext(UserDetails)
     const headerAnimatedStyle = useAnimatedStyle(()=>({transform:[{scaleY:headerScaleY.value}], opacity:headerOpacity.value, top:headerTop.value}))
     const headerComponentAnimatedStyle = useAnimatedStyle(()=>({transform:[{scaleY:headerComponentScaleY.value}], opacity:headerComponentOpacity.value}))
     const topStyle =useAnimatedStyle(()=>({top:top.value}))
-
+    
     useEffect(()=>{
         (async()=>{
             await useGetDocs('categories',setCategoriesInHome,context?.userEmail)
         })()
     },[])
     const bringUpSearch =()=>{
-        mainPageOpacity.value= withTiming(0, {duration: 500})
-        searchTop.value= withTiming(0, {duration: 500})
         textInputRef.current?.focus()
+        headerComponentScaleY.value = withTiming(0,{duration:50})
+        headerComponentOpacity.value = withTiming(0,{duration:50})
+        headerScaleY.value = withTiming(1,{duration:50})
+        headerOpacity.value = withTiming(1,{duration:50})
+        top.value = withTiming(-120,{duration:500})
+        headerTop.value = withTiming(0,{duration:500})
+        
     }
-    // This is for bringing down search if brought up by clicking the textInput field
-    const bringDownSearch =()=>{ 
-        mainPageOpacity.value= withTiming(1, {duration: 300})
-        searchTop.value= withTiming(height+20, {duration: 300})
-        textInputRef.current?.blur()
-     }
     //  when scrolling down
     const handleScroll =(event: any)=>{
             if (defaultTextInputConRef.current){
@@ -76,6 +71,7 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
     }
     // This is for bringing down search if brought up by scrolling
     const bringDownSearch2 =()=>{
+        textInputRef.current?.blur()
         headerComponentScaleY.value = withTiming(1,{duration:500})
         headerComponentOpacity.value = withTiming(1,{duration:500})
         headerScaleY.value = withTiming(0,{duration:500})
@@ -86,14 +82,14 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
     }
     return (
         <View style={{ flex: 1, }}>
+            <StatusBar style='light' translucent={false} backgroundColor='#572C4B' />   
             <Animated.View style={[{transformOrigin: 'center top', position:'absolute', zIndex:10, width:'100%', }, headerAnimatedStyle]}>
                     <HeaderSearch bringDownSearch2={bringDownSearch2}  textInputRef={textInputRef} setTextToSearch={setTextToSearch}  />
             </Animated.View>
-            <StatusBar style='light' backgroundColor='#572C4B' />
             <Animated.ScrollView ref={scrollViewRef} scrollEventThrottle={16} onScroll={handleScroll} style={[{},mainPageAnimatedStyle ]}>
                 <View>
                     <Animated.View style={[{transformOrigin: 'center top'},headerComponentAnimatedStyle]}>
-                        <HeaderComponent headerSearchRef={headerSearchRef} defaultTextInputConRef={defaultTextInputConRef} onTextInputClicked={bringUpSearch} />
+                        <HeaderComponent navigation={navigation} headerSearchRef={headerSearchRef} defaultTextInputConRef={defaultTextInputConRef} onTextInputClicked={bringUpSearch} />
                     </Animated.View>
                     <Animated.View style={topStyle}>
                         <CategoriesList categories={categoriesInHome} navigation={navigation} />
@@ -103,18 +99,11 @@ const HomeScreen = ({navigation}: {navigation: HomeScreenNavigationProp}) => {
                     </Animated.View>
                 </View>
             </Animated.ScrollView>
-             
-            <Animated.View style={[{flex:1,position:'absolute',width, height, zIndex:20 }, searchPageAnimatedStyle]}>
-                <Header  textInputRef={textInputRef} setTextToSearch={setTextToSearch} onArrowBackClicked={bringDownSearch}  />
-                <SearchedProductsList  searchHeaderRef={searchHeaderRef} categories={categoriesInHome} textToSearch={textToSearch} navigation={navigation} />
-            </Animated.View>
         </View>
     );
 };
 
-const styles = StyleSheet.create({
-    
-});
+
 
 export default HomeScreen;
 

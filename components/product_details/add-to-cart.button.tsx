@@ -41,16 +41,16 @@ const AddToCartButton: React.FC<any> = ({item}) => {
     }
     return (
         <View>
-        {!inCartOnPage &&
-        <TouchableOpacity onPress={()=>(addToCartFunc(item))} style={styles.button} >
+        {(!inCartOnPage && !addingToCart )&&
+        <TouchableOpacity onPress={()=>(context?.userEmail? addToCartFunc(item): alert('Please, log in to perform action'))} style={styles.button} >
             <Text style={styles.buttonText}>Add to Cart</Text>
-            <ActivityIndicator style={{position:'absolute', marginTop:5}} color={'blue'} animating={addingToCart} size={'large'}  />
         </TouchableOpacity>}
-        {inCartOnPage &&
+        {addingToCart && <ActivityIndicator style={{marginTop:5}} color={'blue'}  size={'large'}  />}
+        {(!removingFromCart && inCartOnPage) &&
         <TouchableOpacity onPress={()=>removeFromCartFunc(item)} style={styles.button} >
             <Text style={styles.buttonText}>Remove from Cart</Text>
-            <ActivityIndicator style={{position:'absolute', marginTop:5}} color={'blue'} animating={removingFromCart} size={'large'}  />
         </TouchableOpacity>}
+        {removingFromCart && <ActivityIndicator style={{ marginTop:5}} color={'blue'}  size={'large'}  />}
         <Snackbar 
             onDismiss={()=>setSnackBarVisible(false)}
             visible={snackBarVisible}

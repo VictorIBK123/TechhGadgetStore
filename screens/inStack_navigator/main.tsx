@@ -6,6 +6,7 @@ import { AntDesign, Entypo, Feather } from '@expo/vector-icons';
 import CartScreen from '../maintab/cart';
 import HomeScreen from '../maintab/home';
 import { ProfileScreen } from '../maintab/profile';
+import { StatusBar } from 'expo-status-bar';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -13,6 +14,7 @@ const Tab = createMaterialTopTabNavigator();
 export default function MainTabs() {
     return (
         <View style={{ flex: 1 }}>
+            
             <Tab.Navigator  tabBarPosition='bottom' screenOptions={{swipeEnabled:false,tabBarStyle:{height:60}, animationEnabled:false }}>
                 <Tab.Screen name="home" options={{tabBarIcon:({focused, color})=>(focused? <Entypo name="home" size={24} color="black" />: <Feather name="home" size={24} color="black" /> ), title:'Home'}} component={HomeScreen} />
                 <Tab.Screen name="cart" options={{tabBarIcon:({focused, color})=>(focused? <Entypo name="shopping-cart" size={24} color="black" />: <AntDesign name="shoppingcart" size={24} color="black"  /> ), title:'Cart'}} component={CartScreen} />

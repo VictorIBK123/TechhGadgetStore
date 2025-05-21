@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator, Pressable, Dimensions } from 'react-native';
 import { AntDesign, Feather, Fontisto } from '@expo/vector-icons';
 import * as Yup from 'yup';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -12,6 +12,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Snackbar } from 'react-native-paper';
 
 const Login = ({navigation}: {navigation: StackNavigationProp<any>}) => {
+    console.log(auth.currentUser?.email)
     const [passwordVisible, setPasswordVisible] = useState<boolean>(false)
     const [snackBarVisible, setSnackBarVisible] = useState<boolean>(false)
     const emailContext= useContext(UserDetails)
@@ -49,12 +50,15 @@ const Login = ({navigation}: {navigation: StackNavigationProp<any>}) => {
     >
       {({handleSubmit, handleBlur, handleChange, values, errors, touched, isValid})=>(
         <View style={styles.container}>
-            <StatusBar style='light' backgroundColor='#572C4B' />
+            <StatusBar style='light' translucent={false} backgroundColor='#572C4B' />
+            <TouchableOpacity onPress={()=>navigation.navigate('main')} style={{position:'absolute', top:20, right:10, borderRadius:10, elevation:2, paddingHorizontal:20, paddingVertical:5}}>
+                <Text style={{color:'blue', fontSize:16}}>Skip</Text>
+            </TouchableOpacity>
             <Text style={styles.header}>Login to your account</Text>
             <Text style={styles.label}>E-mail</Text>
             <View style={styles.inputView}>
                 <Fontisto style={styles.iconB4} name="email" size={18} color="black" />
-                <TextInput onBlur={handleBlur('email')} onChangeText={handleChange('email')} value={values.email} style={styles.textInput} placeholder='Email' />
+                <TextInput keyboardType='email-address'  onBlur={handleBlur('email')} onChangeText={handleChange('email')} value={values.email} style={styles.textInput} placeholder='Email' />
             </View>
             <View style={{ marginLeft:10, marginBottom:12}}>
                     {touched.email && errors.email && <Text style={{color:'#dd3333'}}>{errors.email}</Text>}
@@ -63,7 +67,7 @@ const Login = ({navigation}: {navigation: StackNavigationProp<any>}) => {
             <Text style={styles.label} >Password</Text>
             <View style={styles.inputView}>
                 <AntDesign style={styles.iconB4} name="lock" size={18} color="black" />
-                <TextInput style={styles.textInput} onBlur={handleBlur('password')} onChangeText={handleChange('password')} value={values.password} secureTextEntry={!passwordVisible} placeholder='password' />
+                <TextInput style={styles.textInput} onBlur={handleBlur('password')} onChangeText={handleChange('password')} value={values.password} secureTextEntry={!passwordVisible} placeholder='Password' />
                 <Pressable style={styles.eyeIcon} onPress={()=>setPasswordVisible(!passwordVisible)}>
                     {passwordVisible? <Feather name="eye" size={15} color="black" />:<Feather  name="eye-off" size={15} color="black" />}
                 </Pressable>
@@ -76,10 +80,10 @@ const Login = ({navigation}: {navigation: StackNavigationProp<any>}) => {
                 <Text style={styles.forgotPassword}>Forgot Password?</Text>
                 
             </TouchableOpacity>
-            <TouchableOpacity disabled={signing||!isValid} onPress={()=>handleSubmit()} style={styles.signUpContainer}>
-                <Text style={styles.signUp}>Log In</Text>
-                <ActivityIndicator style={{position:'absolute', alignSelf:'center', top:'30%'}} size="large" color="#0000ff" animating={signing} />
-            </TouchableOpacity>
+            {!signing && <TouchableOpacity disabled={signing||!isValid} onPress={()=>handleSubmit()} style={styles.signUpContainer}>
+                 <Text style={styles.signUp}>Log In</Text>
+            </TouchableOpacity>}
+            {signing && <ActivityIndicator style={{ alignSelf:'center'}} size="large" color="#0000ff"  />}
             <TouchableOpacity onPress={()=>navigation.replace('create_account')}>
                 <Text style={styles.alreadyHaveAccount}>Don’t have an account?  <Text style={{color:'#2563EB'}}>Sign up</Text></Text>
             </TouchableOpacity>
@@ -97,13 +101,15 @@ const Login = ({navigation}: {navigation: StackNavigationProp<any>}) => {
 
 const styles = StyleSheet.create({
     container: {
+        flexGrow:1,
         flex: 1,
         justifyContent:'center',
         alignItems:'center'
     },
     header:{
         fontSize:20,
-        marginBottom:20
+        marginBottom:20,
+        fontWeight:'bold'
     },
     label:{
         alignItems:'center',

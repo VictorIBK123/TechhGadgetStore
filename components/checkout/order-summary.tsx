@@ -8,7 +8,7 @@ interface DeliveryDataTypes{
 const OrderSummary:React.FC<DeliveryDataTypes> = ({itemQuantity,itemTotal}) => {
     const [deliveryFee, setDeliveryFee] = useState<number>(3450)
     return (
-        <View style={{marginTop:90, flex:4.2/10}} >
+        <View style={{marginTop:10, flex:4/10}} >
             <View style={{paddingHorizontal:10, paddingVertical:10, }}>
                 <Text style={{fontSize:14, fontWeight:'500'}}>Order summary</Text>
             </View>

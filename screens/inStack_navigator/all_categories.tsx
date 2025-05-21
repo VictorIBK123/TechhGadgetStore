@@ -1,7 +1,7 @@
 import { collection, getDocs, getFirestore } from 'firebase/firestore';
 import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
-import { app, db } from '../../firebase-config';
+import { app, auth, db } from '../../firebase-config';
 import { NavigationProp } from '@react-navigation/native';
 import useGetDocs from '../../hooks/get_docs';
 import { UserDetails } from '../../contexts/myContext';
@@ -13,6 +13,16 @@ interface AllCategoriesCompProp {
 const AllCategoriesComp: React.FC<AllCategoriesCompProp> = ({navigation}) => {
     const [categories, setCategories] = React.useState<{name: string, key: string, img_url: string}[]>([])
     const context = useContext(UserDetails)
+     useEffect(()=>{
+            if (!auth.currentUser?.email){
+                navigation.setOptions({
+                    headerRight:()=><TouchableOpacity onPress={()=>navigation.navigate('login')} style={{position:'absolute', top:20, right:10, borderRadius:10, elevation:2, paddingHorizontal:20, paddingVertical:5}}>
+                                                <Text style={{color:'blue', fontSize:16}}>Login</Text>
+                                    </TouchableOpacity>
+                                
+                })
+            }
+        },[])
          useEffect(()=>{
             (async ()=>{
                 await useGetDocs('categories',setCategories,context?.userEmail)

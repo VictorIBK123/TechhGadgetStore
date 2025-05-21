@@ -16,8 +16,8 @@ const CheckoutScreen:React.FC<CheckoutScreenProps> = ({navigation, route}) => {
     const itemQuantity= route.params?.itemQuantity
     const itemTotal = route.params?.itemTotal
     return (
-        <View style={{flex:1}}>
-            <StatusBar style='light' backgroundColor='#572C4B' />
+        <ScrollView keyboardShouldPersistTaps={false} style={{flex:1, }}>
+            <StatusBar style='light' translucent={false} backgroundColor='#572C4B' />
             <Header navigation={navigation} />
             {/* <ScrollView> */}
                 <View style={styles.container}>
@@ -26,7 +26,7 @@ const CheckoutScreen:React.FC<CheckoutScreenProps> = ({navigation, route}) => {
                     <PayButton />
                 </View>
             {/* </ScrollView> */}
-        </View>
+        </ScrollView>
         
     );
 };
@@ -34,7 +34,7 @@ const CheckoutScreen:React.FC<CheckoutScreenProps> = ({navigation, route}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f5f5f5',
+        // backgroundColor: '#ffffff',
     },
    
 });

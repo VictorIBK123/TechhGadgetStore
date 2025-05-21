@@ -9,6 +9,7 @@ import UseRemoveFromCart from '../../hooks/remove_from_cart';
 import useFetchDeals from '../../hooks/fetch_deals';
 import { Snackbar } from 'react-native-paper';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { auth } from '../../firebase-config';
 
 
 interface ProductsInCategoryProps{
@@ -22,6 +23,16 @@ const ProductsInDeals: React.FC<ProductsInCategoryProps> = ({navigation, route})
     const [removingFromCart, setRemovingFromCart] = useState<boolean>(false)
     const context = useContext(UserDetails)
     const [products, setProducts] = React.useState<ProductsData>([])
+     useEffect(()=>{
+            if (!auth.currentUser?.email){
+                navigation.setOptions({
+                    headerRight:()=><TouchableOpacity onPress={()=>navigation.navigate('login')} style={{position:'absolute', top:20, right:10, borderRadius:10, elevation:2, paddingHorizontal:20, paddingVertical:5}}>
+                                                <Text style={{color:'blue', fontSize:16}}>Login</Text>
+                                    </TouchableOpacity>
+                                
+                })
+            }
+        },[])
         useEffect(()=>{
             (async()=>{
                 navigation.setOptions({title: route.params?.productName.toUpperCase()})
@@ -47,7 +58,7 @@ const ProductsInDeals: React.FC<ProductsInCategoryProps> = ({navigation, route})
     return (
         <View style={{flex:1}}>
             <FlatList
-                style={{flex:17/20, marginBottom:20}}
+                style={{flex:1, marginBottom:20}}
                 contentContainerStyle={{marginTop:20, paddingHorizontal:10, paddingBottom:50}}
                 ListEmptyComponent={()=><ActivityIndicator size="large" color='#572C4B' style={{flex:1, justifyContent:'center', alignItems:'center'}} />}  
                 data={data}
@@ -64,7 +75,7 @@ const ProductsInDeals: React.FC<ProductsInCategoryProps> = ({navigation, route})
                                 <Text style={{fontWeight:'500', fontSize:12, textAlign:'center', textDecorationLine:'line-through', textDecorationStyle:'solid', color:'#8E9295'}}>₦{(parseFloat(item.price)+ ((10/100) * parseFloat(item.price))).toLocaleString()}</Text>
                             </View>
                             {!item.inCart &&
-                                <TouchableOpacity disabled={addingToCart} onPress={()=>addToCartFunc(item)} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#2F1528', paddingVertical:7, borderRadius:20, marginHorizontal:10, marginBottom:20}}>
+                                <TouchableOpacity disabled={addingToCart} onPress={()=>context?.userEmail?addToCartFunc(item):alert('Please, log in to perform action')} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#2F1528', paddingVertical:7, borderRadius:20, marginHorizontal:10, marginBottom:20}}>
                                     <Text style={{color:'white'}}>Add to Cart</Text>
                                 </TouchableOpacity>
                             }

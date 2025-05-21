@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Pressable, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Pressable, ActivityIndicator, Dimensions } from 'react-native';
 import { AntDesign, Feather, Fontisto } from '@expo/vector-icons';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -77,14 +77,16 @@ const CreateAccount = ({navigation}: {navigation: StackNavigationProp<any>}) => 
             confirmPassword: Yup.string().oneOf([Yup.ref('password'), undefined], 'Passwords must match').required('Please, confirm your password'),
         })} //validation
         >{({handleSubmit, handleBlur, handleChange, values, errors, touched, isValid})=>(
-        // <ScrollView>
         <View style={styles.container}>
-            <StatusBar style='light' backgroundColor='#2F1528'  />
+            <StatusBar style='light' translucent={false} backgroundColor='#572C4B' />
+            <TouchableOpacity onPress={()=>navigation.navigate('main')} style={{position:'absolute', top:20, right:10, borderRadius:10, elevation:2, paddingHorizontal:20, paddingVertical:5}}>
+                <Text style={{color:'blue', fontSize:16}}>Skip</Text>
+            </TouchableOpacity>
             <Text style={styles.header}>Create your account</Text>
             <Text  style={styles.label}>E-mail</Text>
             <View style={styles.inputView}>
                 <Fontisto style={styles.iconB4} name="email" size={18} color="black" />
-                <TextInput onBlur={handleBlur('email')} onChangeText={handleChange('email')} value={values.email} style={styles.textInput} placeholder='Email' />
+                <TextInput onBlur={handleBlur('email')} keyboardType='email-address' onChangeText={handleChange('email')} value={values.email} style={styles.textInput} placeholder='Email' />
             </View>
             <View style={{ marginLeft:10, marginBottom:12}}>
                 {touched.email && errors.email && <Text style={{color:'#dd3333'}}>{errors.email}</Text>}
@@ -101,7 +103,7 @@ const CreateAccount = ({navigation}: {navigation: StackNavigationProp<any>}) => 
             <Text style={styles.label} >Create Password</Text>
             <View style={styles.inputView}>
                 <AntDesign style={styles.iconB4} name="lock" size={18} color="black" />
-                <TextInput style={styles.textInput} onBlur={handleBlur('password')} secureTextEntry={!passwordVisible} onChangeText={handleChange('password')} value={values.password} placeholder='password' />
+                <TextInput style={styles.textInput} onBlur={handleBlur('password')} secureTextEntry={!passwordVisible} onChangeText={handleChange('password')} value={values.password} placeholder='Password' />
                 <Pressable onPress={()=>setPasswordVisible(!passwordVisible)} style={styles.eyeIcon}>
                     {passwordVisible? <Feather  name="eye" size={15} color="black" />: <Feather onPress={()=>setPasswordVisible(!passwordVisible)} name="eye-off" size={15} color="black" />}
                 </Pressable>
@@ -127,15 +129,14 @@ const CreateAccount = ({navigation}: {navigation: StackNavigationProp<any>}) => 
             </View>
             {signedUp && <Text style={{marginBottom:20,fontSize:13, color:'#666666'}}>Email verification link has been sent to {values.email}, you will be redirected automatically after verification.</Text>}
             {emailUsed && <Text style={{marginBottom:20, color:'red', fontSize:16}}>Email already exists</Text>}
-            <TouchableOpacity disabled={!isValid} onPress={()=>handleSubmit()} style={styles.signUpContainer}>
-                <Text style={styles.signUp}>Sign up</Text>
-                <ActivityIndicator size='large' color="white" animating={loading} style={{position:'absolute', alignSelf:'center', top:'30%'}} />
-            </TouchableOpacity>
+            {!loading && <TouchableOpacity disabled={!isValid} onPress={()=>handleSubmit()} style={styles.signUpContainer}>
+                 <Text style={styles.signUp}>Sign up</Text>
+            </TouchableOpacity>}
+            {loading && <ActivityIndicator size='large' color="blue" style={{ alignSelf:'center'}} />}
             <TouchableOpacity onPress={()=>navigation.replace('login')}>
                 <Text style={styles.alreadyHaveAccount}>Already have an account? <Text style={{color:'#2563EB'}}>Login</Text></Text>
             </TouchableOpacity>
         </View>
-        // </ScrollView>
         )}
         </Formik>
     );
@@ -181,7 +182,8 @@ const styles = StyleSheet.create({
     },
     header:{
         fontSize:20,
-        marginBottom:20
+        marginBottom:20,
+        fontWeight:'bold'
     },
     signUpContainer:{
         backgroundColor:'#2F1528',
@@ -198,10 +200,10 @@ const styles = StyleSheet.create({
     },
     alreadyHaveAccount:{
         fontSize:16,
-        fontWeight:'bold',
         letterSpacing:0,
         textAlign:'center',
         marginTop:10,
+        marginBottom:20
     }
 });
 

@@ -9,7 +9,7 @@ type OtherDetailsProps = {
 
 const OtherDetails: React.FC<OtherDetailsProps> = ({productData }) => {
     return (
-        <View style={{backgroundColor:'white',paddingHorizontal:15, paddingTop:20}} >
+        <View style={{backgroundColor:'white',paddingHorizontal:15, paddingVertical:20}} >
             <Text style={{fontSize:15,fontWeight:'500', }}>{productData.name}</Text>
             <View style={{flexDirection:'row', marginTop:4, alignItems:'center'}}>
                 <Text style={{marginRight:10, fontSize:19}}>₦{parseFloat(productData.price).toLocaleString()}</Text>

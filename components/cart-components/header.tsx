@@ -10,7 +10,7 @@ type HeaderProps = {
 
 const Header = ({ navigation }: HeaderProps) => {
     return (
-        <View style={{flexDirection:'row', paddingHorizontal:15, backgroundColor:'white', paddingTop:20, alignItems:'center', flex:1/10, elevation:10}}>
+        <View style={{flexDirection:'row', paddingHorizontal:15, backgroundColor:'white',  alignItems:'center', flex:1/10, elevation:10}}>
             <TouchableOpacity onPress={()=>navigation.goBack()} style={{marginRight:30}}>
                 <Ionicons name="arrow-back-outline" size={24} color="black" />
             </TouchableOpacity>

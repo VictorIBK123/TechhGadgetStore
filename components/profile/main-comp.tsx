@@ -114,7 +114,7 @@ export const MainComp: React.FC<MainCompProps> = ({setInputDisabled, inputDisabl
       .catch((e)=>alert(e))
     }
   return (
-    <View style={{flex:1}}>
+    <View style={{flex:9/10}}>
     <ScrollView contentContainerStyle={styles.container}>
         
       <View style={styles.fieldGroup}>
@@ -161,10 +161,10 @@ export const MainComp: React.FC<MainCompProps> = ({setInputDisabled, inputDisabl
         </View>
       </View>
 
-      {!inputDisabled && <TouchableOpacity onPress={saveChanges} style={[styles.saveButton,]}>
+      {(!inputDisabled && !saving) &&  <TouchableOpacity onPress={saveChanges} style={[styles.saveButton,]}>
         <Text style={styles.saveButtonText}>SAVE CHANGES</Text>
-        <ActivityIndicator size={'large'} animating={saving} style={{position:'absolute', alignSelf:'center', marginTop:5}} color={'blue'} />
       </TouchableOpacity>}
+      {saving && <ActivityIndicator size={'large'}  style={{ alignSelf:'center', marginTop:5}} color={'blue'} />}
       {inputDisabled && <TouchableOpacity onPress={()=>setInputDisabled(false)} style={styles.saveButton}>
         <Text style={styles.saveButtonText}>EDIT PROFILE</Text>
       </TouchableOpacity>}
@@ -200,7 +200,7 @@ const Input: React.FC<InputProps> = ({inputDisabled, label, value, onChangeText,
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 100,
+    paddingTop: 20,
     paddingHorizontal:20,
     backgroundColor: '#fff',
   },

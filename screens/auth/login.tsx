@@ -12,7 +12,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Snackbar } from 'react-native-paper';
 
 const Login = ({navigation}: {navigation: StackNavigationProp<any>}) => {
-    console.log(auth.currentUser?.email)
     const [passwordVisible, setPasswordVisible] = useState<boolean>(false)
     const [snackBarVisible, setSnackBarVisible] = useState<boolean>(false)
     const emailContext= useContext(UserDetails)

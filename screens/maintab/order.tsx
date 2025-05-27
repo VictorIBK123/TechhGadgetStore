@@ -12,34 +12,31 @@ import { auth, db } from '../../firebase-config';
 import { StatusBar } from 'expo-status-bar';
 import { onAuthStateChanged } from 'firebase/auth';
 import UseRemoveFromCart from '../../hooks/remove_from_cart';
+import { useGetOrderedProducts } from '../../hooks/get_ordered_products';
 
-type CartScreenNavigationProp = NavigationProp<any>;
+type OrderScreenNavigationProp = NavigationProp<any>;
 
-const CartScreen = ({navigation}: {navigation: CartScreenNavigationProp}) => {
+const OrderScreen = ({navigation}: {navigation: OrderScreenNavigationProp}) => {
     const userContext = useContext(UserDetails)
     const categoriesContext = useContext(CategoriesContext)
     const [loadingCart, setLoadingCart]= useState<boolean>(false)
-    const [cartData, setCartData] = useState<ProductsData>([])
+    const [orderData, setOrderData] = useState<ProductsData>([])
     const [categories, setCategories] = useState<{ name: string; key: string; img_url: string; }[]>([])
     const [total, setTotal] = useState<number>(0)
     const [removingFromCart, setRemovingFromCart] = useState<boolean>(false)
-    const getCartPrFunc =async()=>{
+    const getOrderPrFunc =async()=>{
         await useGetDocs('categories',setCategories,userContext?.userEmail)
         if (userContext?.userEmail){
-            const result=await useGetCartProducts(userContext?.userEmail,categories)
-            setCartData(result.map((element)=>(
-                {...element, quantity:1}
+            const result=await useGetOrderedProducts(userContext?.userEmail,categories)
+            setOrderData(result.map((element)=>(
+                {...element}
             )))
         }
     }
-    useEffect(()=>{
-        (async()=>await getCartPrFunc())()
-        const unSub = userContext?.userEmail?onSnapshot(doc(db,'users', userContext?.userEmail), async()=>await getCartPrFunc()):undefined
-        return unSub
-    },[])
+    
     useEffect(()=>{
         let sum:number=0;
-        cartData.forEach((e)=>{
+        orderData.forEach((e)=>{
             if (e.quantity){
                 sum+=parseInt(e.price)*e.quantity
             }
@@ -47,29 +44,30 @@ const CartScreen = ({navigation}: {navigation: CartScreenNavigationProp}) => {
             
         })
         setTotal(sum)
-    },[cartData])
+    },[orderData])
 
     useEffect(()=>{
         (async()=>{
             if (userContext?.userEmail){
-                const result = await useGetCartProducts(userContext?.userEmail,categories)
-                setCartData(result.map((element)=>(
-                    {...element, quantity:1}
+                const result = await useGetOrderedProducts(userContext?.userEmail,categories)
+                setOrderData(result.map((element)=>(
+                    {...element}
                 )))
             }
 
         })()
         
     },[categories])
+    
     const calcQuantity = useCallback((operation: string, index:number)=>{
         if (operation=='add'){
-            setCartData( [...cartData.slice(0,index),{name: cartData[index].name, key: cartData[index].key, img_url: cartData[index].img_url, price:cartData[index].price, description:cartData[index].description, inCart: cartData[index].inCart, quantity: cartData[index].quantity!=undefined?cartData[index].quantity+1:0}, ...cartData.slice(index+1, cartData.length) ] )
+            setOrderData( [...orderData.slice(0,index),{name: orderData[index].name, key: orderData[index].key, img_url: orderData[index].img_url, price:orderData[index].price, description:orderData[index].description, inCart: orderData[index].inCart, quantity: orderData[index].quantity!=undefined?orderData[index].quantity+1:0}, ...orderData.slice(index+1, orderData.length) ] )
         }
         else {
             // the quantity must be greater than 1 to add 
-            setCartData( [...cartData.slice(0,index),{name: cartData[index].name, key: cartData[index].key, img_url: cartData[index].img_url, price:cartData[index].price, description:cartData[index].description, inCart: cartData[index].inCart, quantity: cartData[index].quantity!=undefined && cartData[index].quantity>1 ?cartData[index].quantity-1:1}, ...cartData.slice(index+1, cartData.length) ] )
+            setOrderData( [...orderData.slice(0,index),{name: orderData[index].name, key: orderData[index].key, img_url: orderData[index].img_url, price:orderData[index].price, description:orderData[index].description, inCart: orderData[index].inCart, quantity: orderData[index].quantity!=undefined && orderData[index].quantity>1 ?orderData[index].quantity-1:1}, ...orderData.slice(index+1, orderData.length) ] )
         }
-    },[cartData,setCartData])
+    },[orderData,setOrderData])
     const removeFromCart =(item: AProductData)=>{
         Alert.alert('Delete','Are you sure you want to remove this product from cart?',[{text:'No'},{text:'Remove', onPress: async() => await UseRemoveFromCart(item.name,userContext?.userEmail, setRemovingFromCart ) }])
     }
@@ -78,7 +76,7 @@ const CartScreen = ({navigation}: {navigation: CartScreenNavigationProp}) => {
             <View style={{flex:1}}>
                 <StatusBar style='light' translucent={false} backgroundColor='#572C4B' />
                 <Header navigation={navigation} />
-                <OrderSummary removeFromCart={removeFromCart} navigation={navigation} cartData={cartData} total={total} calcQuantity={calcQuantity} />
+                <OrderSummary removeFromCart={removeFromCart} navigation={navigation} cartData={orderData} total={total} calcQuantity={calcQuantity} />
                 <ActivityIndicator size={'large'} color={'#2F1528'} style={{position:'absolute',alignSelf:'center',top:100}} animating={removingFromCart}  />
             </View>
         );
@@ -102,4 +100,4 @@ const CartScreen = ({navigation}: {navigation: CartScreenNavigationProp}) => {
 
 
 
-export default CartScreen;
+export default OrderScreen;

@@ -7,9 +7,9 @@ import * as Yup from 'yup';
 import { auth } from '../../firebase-config';
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 import { StatusBar } from 'expo-status-bar';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NavigationProp } from '@react-navigation/native';
 
-const CreateAccount = ({navigation}: {navigation: StackNavigationProp<any>}) => {
+const CreateAccount = ({navigation}: {navigation: NavigationProp<any, any>}) => {
     const [passwordVisible, setPasswordVisible] = React.useState(false);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = React.useState(false);
     const [signedUp, setSignedUp] = React.useState(false);
@@ -31,13 +31,12 @@ const CreateAccount = ({navigation}: {navigation: StackNavigationProp<any>}) => 
                 updateProfile(auth.currentUser, {
                   displayName: `${values.username}`,
                 }).then(() => {
-                  // Profile updated!
-                  // ...
+                    navigation.navigate('personal_info', {email: values.email, username: values.username})
+                    clearInterval(interval)
                 }).catch((error) => {
                   alert(error.message)
                 });
-                navigation.replace('personal_info', {email: values.email, username: values.username})
-                clearInterval(interval)
+                
               } 
             }
           },3000)
@@ -133,7 +132,7 @@ const CreateAccount = ({navigation}: {navigation: StackNavigationProp<any>}) => 
                  <Text style={styles.signUp}>Sign up</Text>
             </TouchableOpacity>}
             {loading && <ActivityIndicator size='large' color="blue" style={{ alignSelf:'center'}} />}
-            <TouchableOpacity onPress={()=>navigation.replace('login')}>
+            <TouchableOpacity onPress={()=>navigation.navigate('login')}>
                 <Text style={styles.alreadyHaveAccount}>Already have an account? <Text style={{color:'#2563EB'}}>Login</Text></Text>
             </TouchableOpacity>
         </View>

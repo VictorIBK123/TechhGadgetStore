@@ -1,14 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
-import { AntDesign, Feather, Fontisto } from '@expo/vector-icons';
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types';
+import { AntDesign } from '@expo/vector-icons';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase-config';
 import { UserDetails } from '../../contexts/myContext';
 import { StatusBar } from 'expo-status-bar';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
 
 
-type PersonalInformationProps = NativeStackScreenProps<any>;
+type PersonalInformationProps = {
+    navigation: NavigationProp<any>,
+    route: RouteProp<any>
+}
 
 const PersonalInformation: React.FC<PersonalInformationProps> = ({ navigation, route }) => {
     const [loading, setLoading] = useState<boolean>(false)
@@ -90,9 +93,9 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ navigation, r
         // Add a new document in collection "cities"
         try {
             emailContext?.setUserEmail(route.params?.email)
-            await setDoc(doc(db, "users", route.params?.email), {...values, cart:[]});
+            await setDoc(doc(db, "users", route.params?.email), {...values, cart:[], orders:[]});
             setLoading(false)
-            navigation.replace('main')
+            navigation.navigate('main')
         } catch (error) {
             setLoading(false)
             alert(error)
@@ -122,7 +125,7 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ navigation, r
             <Text style={styles.label} >Date of Birth</Text>
             <View style={styles.inputView}>
                 <AntDesign style={styles.iconB4} name="calendar" size={18} color="black" />
-                <TextInput style={styles.textInput} maxLength={10} inputMode='numeric' onChangeText={(text)=>inputChanged('dateOfBirth', text)} value={values?.dateOfBirth} placeholder='dd/mm/yyyy' />
+                <TextInput style={styles.textInput} maxLength={10}keyboardType='numeric' onChangeText={(text)=>inputChanged('dateOfBirth', text)} value={values?.dateOfBirth} placeholder='dd/mm/yyyy' />
             </View>
             <View style={{ marginLeft:10, marginBottom:12}}>
                     {!valids.dateOfBirth && <Text style={{color:'#dd3333'}}>Please enter correct date of birth</Text>}
@@ -181,7 +184,8 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ navigation, r
             {!loading && <TouchableOpacity disabled={!allInputsValid} onPress={continueButtonHandler} style={styles.signUpContainer}>
                 <Text style={styles.signUp}>Continue</Text>
             </TouchableOpacity>}
-            { loading && <ActivityIndicator size={'large'} color={'blue'} animating={loading} />}        </View>
+            { loading && <ActivityIndicator size={'large'} color={'blue'} animating={loading} />}        
+            </View>
         </ScrollView>
     );
 };

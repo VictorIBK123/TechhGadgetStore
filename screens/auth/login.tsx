@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator, Pressable, Dimensions } from 'react-native';
 import { AntDesign, Feather, Fontisto } from '@expo/vector-icons';
 import * as Yup from 'yup';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase-config';
 import { Formik } from 'formik';
 import { StatusBar } from 'expo-status-bar';
@@ -17,7 +17,7 @@ const Login = ({navigation}: {navigation: StackNavigationProp<any>}) => {
     const emailContext= useContext(UserDetails)
     const loginSchema= Yup.object().shape({
         email: Yup.string().email('Invalid email').required('Please, enter your email'),
-        password: Yup.string().min(6, 'Password is too short, min 6 chars').max(15, 'Password is too long, max 15 chars').required('Please, enter your password').matches(/^\S*$/, 'Password must not contain spaces')
+        password: Yup.string().min(6, 'Password is too short, min 6 chars').max(30, 'Password is too long, max 30 chars').required('Please, enter your password').matches(/^\S*$/, 'Password must not contain spaces')
       })
     const [signing, setSigning] = useState(false)
   const authenticate =(values: { email: string; password: string })=>{
@@ -38,6 +38,7 @@ const Login = ({navigation}: {navigation: StackNavigationProp<any>}) => {
     Alert.alert(error.code, error.message)
   })
 }
+
     return (
         <Formik
       initialValues={{
@@ -75,7 +76,7 @@ const Login = ({navigation}: {navigation: StackNavigationProp<any>}) => {
                 {touched.password && errors.password && <Text style={{color:'#dd3333'}}>{errors.password}</Text>}
                 {touched.password && !errors.password && <Text style={{ color:'green'}}>Password rules passed</Text>}
             </View>
-            <TouchableOpacity style={styles.forgotPasswordContainer}>
+            <TouchableOpacity onPress={()=>navigation.navigate('forgot_password')} style={styles.forgotPasswordContainer}>
                 <Text style={styles.forgotPassword}>Forgot Password?</Text>
                 
             </TouchableOpacity>

@@ -111,7 +111,7 @@ export const MainComp: React.FC<MainCompProps> = ({setInputDisabled, inputDisabl
         setInputDisabled(true);
         allUserDetails?.setValues({firstName,lastName,dateOfBirth,address1,address2,city,state,zip,country});
         setSaving(false)})
-      .catch((e)=>alert(e))
+      .catch((e)=>{alert(e);setSaving(false)})
     }
   return (
     <View style={{flex:9/10}}>

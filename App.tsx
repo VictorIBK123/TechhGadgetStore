@@ -18,6 +18,7 @@ import { auth, db } from './firebase-config';
 import { PaperProvider } from 'react-native-paper';
 import { StatusBar } from 'expo-status-bar';
 import { onAuthStateChanged } from 'firebase/auth';
+import ForgotPasswordComp from './screens/auth/forgotpassword';
 
 export default function App() {
   const Stack = createStackNavigator()
@@ -87,6 +88,7 @@ export default function App() {
               <Stack.Screen name='create_account' options={{headerShown:false, title:'Create your account', headerTitleAlign:'center', headerStyle:{height:70}}} component={CreateAccount} />
               <Stack.Screen name='personal_info' component={PersonalInformation} options={{title:'Personal Information'}} />
               <Stack.Screen name='login' options={{headerShown:false}} component={Login} />
+              <Stack.Screen name='forgot_password' options={{headerShown:false}} component={ForgotPasswordComp} />
               <Stack.Screen name="main" options={{headerShown:false}} component={MainTabs} />
               <Stack.Screen name="product_details" options={{headerShown:false}} component={ProductDetails} />
               <Stack.Screen name="checkout" options={{headerShown:false}} component={CheckoutScreen} />
